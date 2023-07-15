@@ -21,7 +21,7 @@ var peer = null
 # Name for my player.
 var player_name = "The Warrior"
 
-# Names for remote players in id:name format.
+# Names for remote players in {id:{name: <name>, ready: <true/false>}} format.
 var players = {}
 var players_ready = []
 
@@ -74,7 +74,7 @@ func _connected_fail():
 remote func register_player(new_player_name):
 	var id = get_tree().get_rpc_sender_id()
 	print(id)
-	players[id] = new_player_name
+	players[id] = {"name": new_player_name}
 	emit_signal("player_list_changed")
 
 
@@ -105,14 +105,14 @@ remote func pre_start_game(spawn_points):
 			player.set_player_name(player_name)
 		else:
 			# Otherwise set name from peer.
-			player.set_player_name(players[p_id])
+			player.set_player_name(players[p_id]["name"])
 
 		world.get_node("Players").add_child(player)
 
 	# Set up score.
 	world.get_node("Score").add_player(get_tree().get_network_unique_id(), player_name)
 	for pn in players:
-		world.get_node("Score").add_player(pn, players[pn])
+		world.get_node("Score").add_player(pn, players[pn]["name"])
 
 	if not get_tree().is_network_server():
 		# Tell server we are ready to start.

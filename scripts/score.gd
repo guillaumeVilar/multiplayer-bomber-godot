@@ -32,7 +32,7 @@ func add_player(id, new_player_name):
 	l.set_h_size_flags(SIZE_EXPAND_FILL)
 	var font = DynamicFont.new()
 	font.set_size(18)
-	font.set_font_data(preload("res://montserrat.otf"))
+	font.set_font_data(preload("res://assets/montserrat.otf"))
 	l.add_font_override("font", font)
 	add_child(l)
 

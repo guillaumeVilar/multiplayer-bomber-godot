@@ -80,7 +80,7 @@ func refresh_lobby():
 	$Players/List.clear()
 	$Players/List.add_item(gamestate.get_player_name() + " (You)")
 	for p in players:
-		$Players/List.add_item(p)
+		$Players/List.add_item(p["name"])
 
 	$Players/Start.disabled = not get_tree().is_network_server()
 
