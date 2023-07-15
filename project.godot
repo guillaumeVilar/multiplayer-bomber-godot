@@ -84,10 +84,6 @@ set_bomb={
  ]
 }
 
-[logging]
-
-file_logging/log_path="godot.log"
-
 [rendering]
 
 quality/driver/driver_name="GLES2"
