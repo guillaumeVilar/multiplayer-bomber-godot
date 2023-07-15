@@ -152,7 +152,7 @@ remote func update_player_list_ready_from_lobby(player):
 # Called when the ready button is pressed in the lobby. 
 # This will tell all peers that the local player is ready.
 func local_player_is_ready_to_start_from_lobby():
-	local_player["ready"] = true
+	local_player["ready"] = !local_player["ready"]
 	# Run update_player_list_ready_from_lobby on all other peers to update info for local player
 	rpc("update_player_list_ready_from_lobby", local_player)
 	# Refreshing locally list of player
