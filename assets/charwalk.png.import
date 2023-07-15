@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/brickfloor.png-bab1cbace80ab627972eea565951db9e.stex"
+path="res://.import/charwalk.png-faa1106936dc3ced598a0e10a43eb5e9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://brickfloor.png"
-dest_files=[ "res://.import/brickfloor.png-bab1cbace80ab627972eea565951db9e.stex" ]
+source_file="res://assets/charwalk.png"
+dest_files=[ "res://.import/charwalk.png-faa1106936dc3ced598a0e10a43eb5e9.stex" ]
 
 [params]
 

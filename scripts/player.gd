@@ -75,7 +75,7 @@ func _physics_process(_delta):
 
 # Use sync because it will be called everywhere
 remotesync func setup_bomb(bomb_name, pos, by_who):
-	var bomb = preload("res://bomb.tscn").instance()
+	var bomb = preload("res://scenes/bomb.tscn").instance()
 	bomb.set_name(bomb_name) # Ensure unique name for the bomb
 	bomb.position = pos
 	bomb.from_player = by_who

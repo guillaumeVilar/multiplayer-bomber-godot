@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://tileset.tres" type="TileSet" id=1]
-[ext_resource path="res://rock.tscn" type="PackedScene" id=2]
-[ext_resource path="res://score.gd" type="Script" id=3]
-[ext_resource path="res://montserrat.otf" type="DynamicFontData" id=4]
+[ext_resource path="res://assets/tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://scenes/rock.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/score.gd" type="Script" id=3]
+[ext_resource path="res://assets/montserrat.otf" type="DynamicFontData" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 44
