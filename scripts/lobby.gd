@@ -103,4 +103,4 @@ func _on_find_public_ip_pressed():
 
 func _on_Ready_pressed():
 	print("Ready button has been pressed")
-	pass # Replace with function body.
+	gamestate.local_player_is_ready_to_start_from_lobby()

@@ -36,7 +36,8 @@ func _ready():
 
 # Callback from SceneTree.
 func _player_connected(id):
-	# Registration of a client beings here, tell the connected player that we are here.
+	print("Player connected ID: " + str(id))
+	# Called on both clients and server when a peer connects. Send local info to the new peer.
 	rpc_id(id, "register_player", local_player["name"])
 
 
@@ -76,6 +77,7 @@ remote func register_player(new_player_name):
 	var id = get_tree().get_rpc_sender_id()
 	print(id)
 	players[id] = {"name": new_player_name, "ready": false}
+	print("Player with id: " + str(id) + " - adding the name: " + new_player_name)
 	emit_signal("player_list_changed")
 
 
@@ -136,6 +138,25 @@ remote func ready_to_start(id):
 		for p in players:
 			rpc_id(p, "post_start_game")
 		post_start_game()
+
+
+# Run on the server and all peers to update the list of player. The caller is now ready.
+remote func update_player_list_ready_from_lobby(player):
+	var id = get_tree().get_rpc_sender_id()
+	print("On remote - function update player with id: " + str(id))
+	players[id] = player
+	# Refreshing on remote end with new list of player
+	emit_signal("player_list_changed")
+
+
+# Called when the ready button is pressed in the lobby. 
+# This will tell all peers that the local player is ready.
+func local_player_is_ready_to_start_from_lobby():
+	local_player["ready"] = true
+	# Run update_player_list_ready_from_lobby on all other peers to update info for local player
+	rpc("update_player_list_ready_from_lobby", local_player)
+	# Refreshing locally list of player
+	emit_signal("player_list_changed")
 
 
 func host_game(new_player_name):
