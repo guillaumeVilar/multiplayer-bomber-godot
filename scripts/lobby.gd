@@ -25,8 +25,8 @@ func _on_host_pressed():
 	$Players.show()
 	$Connect/ErrorLabel.text = ""
 
-	var player_name = $Connect/Name.text
-	gamestate.host_game(player_name)
+	# var player_name = $Connect/Name.text
+	gamestate.host_game()
 	refresh_lobby()
 
 

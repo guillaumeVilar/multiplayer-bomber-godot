@@ -32,13 +32,26 @@ func _ready():
 	get_tree().connect("connected_to_server", self, "_connected_ok")
 	get_tree().connect("connection_failed", self, "_connected_fail")
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
-
+	if "--server" in OS.get_cmdline_args():
+		# Run your server startup code here...
+		# Using this check, you can start a dedicated server by running
+		# a Godot binary (headless or not) with the `--server` command-line argument.
+		# var lobby = load("res://scenes/lobby.tscn").instance()
+		print("Server starting up detected!")
+		host_game()
+		# lobby.get_node("Lobby")._on_host_pressed()
 
 # Callback from SceneTree.
 func _player_connected(id):
+	emit_signal("player_list_changed")
+
+	# If this node is the server, does not send any extra information to the new peer connected
+	if get_tree().get_network_unique_id() == 1:
+		print("This is the server doing nothing here.")
+		return
 	print("Player connected ID: " + str(id))
 	# Called on both clients and server when a peer connects. Send local info to the new peer.
-	rpc_id(id, "register_player", local_player["name"])
+	rpc_id(id, "register_player", local_player["name"])	
 
 
 # Callback from SceneTree.
@@ -159,8 +172,7 @@ func local_player_is_ready_to_start_from_lobby():
 	emit_signal("player_list_changed")
 
 
-func host_game(new_player_name):
-	local_player["name"] = new_player_name
+func host_game():
 	peer = NetworkedMultiplayerENet.new()
 	peer.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(peer)
