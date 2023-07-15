@@ -75,12 +75,20 @@ func _on_game_error(errtxt):
 
 
 func refresh_lobby():
+	# Clear current list
+	$Players/List.clear()
+
+	# Display local player on top
+	var local_player = gamestate.get_local_player()
+	var ready_status_string = "Ready" if local_player["ready"] else "Not ready"
+	$Players/List.add_item(local_player["name"] + " - " + ready_status_string + " - (You)")
+	
+	# Get all player list from gamestate object
 	var players = gamestate.get_player_list()
 	players.sort()
-	$Players/List.clear()
-	$Players/List.add_item(gamestate.get_player_name() + " (You)")
 	for p in players:
-		$Players/List.add_item(p["name"])
+		ready_status_string = "Ready" if p["ready"] else "Not ready"
+		$Players/List.add_item(p["name"] + " - " + ready_status_string)
 
 	$Players/Start.disabled = not get_tree().is_network_server()
 

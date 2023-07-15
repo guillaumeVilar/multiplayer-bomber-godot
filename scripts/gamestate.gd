@@ -19,7 +19,7 @@ const MAX_PEERS = 12
 var peer = null
 
 # Name for my player.
-var player_name = "The Warrior"
+var local_player = {"name": "The Warrior", "ready": false}
 
 # Names for remote players in {id:{name: <name>, ready: <true/false>}} format.
 var players = {}
@@ -37,13 +37,14 @@ func _ready():
 # Callback from SceneTree.
 func _player_connected(id):
 	# Registration of a client beings here, tell the connected player that we are here.
-	rpc_id(id, "register_player", player_name)
+	rpc_id(id, "register_player", local_player["name"])
 
 
 # Callback from SceneTree.
 func _player_disconnected(id):
 	if has_node("/root/World"): # Game is in progress.
 		if get_tree().is_network_server():
+			# TODO: To fix to support new format.
 			emit_signal("game_error", "Player " + players[id] + " disconnected")
 			end_game()
 	else: # Game is not in progress.
@@ -74,7 +75,7 @@ func _connected_fail():
 remote func register_player(new_player_name):
 	var id = get_tree().get_rpc_sender_id()
 	print(id)
-	players[id] = {"name": new_player_name}
+	players[id] = {"name": new_player_name, "ready": false}
 	emit_signal("player_list_changed")
 
 
@@ -102,7 +103,7 @@ remote func pre_start_game(spawn_points):
 
 		if p_id == get_tree().get_network_unique_id():
 			# If node for this peer id, set name.
-			player.set_player_name(player_name)
+			player.set_player_name(local_player["name"])
 		else:
 			# Otherwise set name from peer.
 			player.set_player_name(players[p_id]["name"])
@@ -110,7 +111,7 @@ remote func pre_start_game(spawn_points):
 		world.get_node("Players").add_child(player)
 
 	# Set up score.
-	world.get_node("Score").add_player(get_tree().get_network_unique_id(), player_name)
+	world.get_node("Score").add_player(get_tree().get_network_unique_id(), local_player["name"])
 	for pn in players:
 		world.get_node("Score").add_player(pn, players[pn]["name"])
 
@@ -138,14 +139,14 @@ remote func ready_to_start(id):
 
 
 func host_game(new_player_name):
-	player_name = new_player_name
+	local_player["name"] = new_player_name
 	peer = NetworkedMultiplayerENet.new()
 	peer.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(peer)
 
 
 func join_game(ip, new_player_name):
-	player_name = new_player_name
+	local_player["name"] = new_player_name
 	peer = NetworkedMultiplayerENet.new()
 	peer.create_client(ip, DEFAULT_PORT)
 	get_tree().set_network_peer(peer)
@@ -155,8 +156,8 @@ func get_player_list():
 	return players.values()
 
 
-func get_player_name():
-	return player_name
+func get_local_player():
+	return local_player
 
 
 func begin_game():
