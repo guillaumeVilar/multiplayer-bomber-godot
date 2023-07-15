@@ -152,10 +152,9 @@ remote func ready_to_start(id):
 			rpc_id(p, "post_start_game")
 		post_start_game()
 
-
 func are_all_players_ready():
 	for p in players:
-		if p["ready"] == false:
+		if players[p]["ready"] == false:
 			return false
 	return true
 
@@ -168,7 +167,10 @@ remote func update_player_list_ready_from_lobby(player):
 	emit_signal("player_list_changed")
 
 	if get_tree().is_network_server():
-		if are_all_players_ready():
+		# Checking if all the players are ready to start the game
+		print("Checking on readyness of player dict: " + str(players))
+		if are_all_players_ready() == true:
+			print("Beginning the game")
 			begin_game()
 
 
