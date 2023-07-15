@@ -153,6 +153,12 @@ remote func ready_to_start(id):
 		post_start_game()
 
 
+func are_all_players_ready():
+	for p in players:
+		if p["ready"] == false:
+			return false
+	return true
+
 # Run on the server and all peers to update the list of player. The caller is now ready.
 remote func update_player_list_ready_from_lobby(player):
 	var id = get_tree().get_rpc_sender_id()
@@ -160,6 +166,10 @@ remote func update_player_list_ready_from_lobby(player):
 	players[id] = player
 	# Refreshing on remote end with new list of player
 	emit_signal("player_list_changed")
+
+	if get_tree().is_network_server():
+		if are_all_players_ready():
+			begin_game()
 
 
 # Called when the ready button is pressed in the lobby. 
@@ -198,8 +208,8 @@ func begin_game():
 
 	# Create a dictionary with peer id and respective spawn points, could be improved by randomizing.
 	var spawn_points = {}
-	spawn_points[1] = 0 # Server in spawn point 0.
-	var spawn_point_idx = 1
+	# spawn_points[1] = 0 # Server in spawn point 0.
+	var spawn_point_idx = 0
 	for p in players:
 		spawn_points[p] = spawn_point_idx
 		spawn_point_idx += 1
