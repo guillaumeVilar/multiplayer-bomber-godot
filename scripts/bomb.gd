@@ -3,6 +3,11 @@ extends Area2D
 var in_area = []
 var from_player
 
+func _ready():
+	# Disable collision kinematic when the bomb is created
+	var collision_shape_kinematic = get_node("KinematicBody").get_node("CollisionShape2D")
+	collision_shape_kinematic.disabled = true
+
 
 # Called from the animation.
 func explode():
@@ -30,3 +35,11 @@ func _on_bomb_body_enter(body):
 
 func _on_bomb_body_exit(body):
 	in_area.erase(body)
+
+func disable_kinematic_collision():
+	print("disable kinematic collision of the bomb")
+	get_node("KinematicBody").get_node("CollisionShape2D").disabled = false
+
+
+func _on_AreaCollision_body_exited(_body):
+	call_deferred("disable_kinematic_collision")
