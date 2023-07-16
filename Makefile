@@ -13,3 +13,6 @@ run-client-linux:
 export-server-linux: export-linux run-server-linux
 
 export-client-linux: export-linux run-client-linux
+
+launch-godot:
+	godot project.godot
