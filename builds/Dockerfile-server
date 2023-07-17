@@ -1,0 +1,18 @@
+# Docker image based on ubuntu 23.10
+# Docker image for the base server
+
+FROM ubuntu:23.10
+
+WORKDIR /opt
+
+COPY builds /opt
+
+# Expose the UDP port to contact the server
+EXPOSE 10567/udp
+
+# TODO: 
+# Improve the building of this image by doing a wget to get the server binary from the godot repository: 
+# https://downloads.tuxfamily.org/godotengine/3.5.1/
+
+# Run the Godot server binary on the exported .pck files in server mode (--server)
+ENTRYPOINT ["/opt/Godot_v3.5.1-stable_linux_server.64", "-v", "-d", "--main-pack", "/opt/bomber_linux_export.pck", "--server"]
