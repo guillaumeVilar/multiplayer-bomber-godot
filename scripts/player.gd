@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 
 const MOTION_SPEED = 150.0
+const MAX_HEALTH = 5
 
 puppet var puppet_pos = Vector2()
 puppet var puppet_motion = Vector2()
@@ -11,6 +12,7 @@ export var stunned = false
 var current_anim = ""
 var prev_bombing = false
 var bomb_index = 0
+var current_health = MAX_HEALTH
 
 
 func _ready():
@@ -85,11 +87,14 @@ remotesync func setup_bomb(bomb_name, pos, by_who):
 
 puppet func stun():
 	stunned = true
+	current_health -= 1
 
 
 master func exploded(_by_who):
 	if stunned:
 		return
+	# Update the score locally
+	$"../../Score".rpc("modify_health", get_tree().get_network_unique_id(), current_health - 1)
 	rpc("stun") # Stun puppets
 	stun() # Stun master - could use sync to do both at once
 

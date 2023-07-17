@@ -2,7 +2,7 @@ extends HBoxContainer
 
 
 var player_labels = {}
-
+const MAX_HEALTH = 5
 
 func _process(_delta):
 	var rocks_left = $"../Rocks".get_child_count()
@@ -17,18 +17,33 @@ func _process(_delta):
 		$"../Winner".set_text("THE WINNER IS:\n" + winner_name)
 		$"../Winner".show()
 
+# Return the label to display.
+func get_score_label_for_player(player_id):
+	var player = player_labels[player_id]
+	return player.name + "\n score:" + str(player.score) + "\n health:" + str(player.health)
+
+func refresh_score_and_health_for_player(player_id):
+	var pl = player_labels[player_id]
+	pl.label.set_text(get_score_label_for_player(player_id))
 
 remotesync func increase_score(for_who):
 	assert(for_who in player_labels)
 	var pl = player_labels[for_who]
 	pl.score += 1
-	pl.label.set_text(pl.name + "\n" + str(pl.score))
+	refresh_score_and_health_for_player(for_who)
+
+remotesync func modify_health(player_id, new_health):
+	print("player_id: " + str(player_id))
+	print("player_labels: " + str(player_labels))
+	assert(player_id in player_labels)
+	var pl = player_labels[player_id]
+	pl.health = new_health
+	refresh_score_and_health_for_player(player_id)
 
 
 func add_player(id, new_player_name):
 	var l = Label.new()
 	l.set_align(Label.ALIGN_CENTER)
-	l.set_text(new_player_name + "\n" + "0")
 	l.set_h_size_flags(SIZE_EXPAND_FILL)
 	var font = DynamicFont.new()
 	font.set_size(18)
@@ -36,7 +51,8 @@ func add_player(id, new_player_name):
 	l.add_font_override("font", font)
 	add_child(l)
 
-	player_labels[id] = { name = new_player_name, label = l, score = 0 }
+	player_labels[id] = { name = new_player_name, label = l, score = 0, health = MAX_HEALTH }
+	refresh_score_and_health_for_player(id)
 
 
 func _ready():
