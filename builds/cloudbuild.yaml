@@ -1,7 +1,7 @@
 steps:
 # Docker build
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1', 'builds/Dockerfile-server' ]
+  args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1', '-f', 'builds/Dockerfile-server', '.' ]
   id: build
 
 # Run unit tests inside the docker container
