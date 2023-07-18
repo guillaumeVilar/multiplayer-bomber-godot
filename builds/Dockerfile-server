@@ -11,6 +11,8 @@ RUN  apt-get update \
   && wget https://downloads.tuxfamily.org/godotengine/3.5.1/Godot_v3.5.1-stable_linux_server.64.zip \
   && unzip Godot_v3.5.1-stable_linux_server.64.zip -d /opt
 
+# TODO: Include the export of server operation inside the docker build to have a completly automated pipeline.
+
 COPY builds /opt
 
 # Expose the UDP port to contact the server

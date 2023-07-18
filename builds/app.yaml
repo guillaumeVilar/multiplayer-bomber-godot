@@ -1,0 +1,95 @@
+# Command to deploy app engine manually: 
+# gcloud app deploy builds/app.yaml --image-url=europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1
+
+runtime: custom
+env: flex
+service: default
+network:
+  forwarded_ports:
+    - 10567
+
+# # Optional: If you want to specify automatic scaling settings
+# automatic_scaling:
+# #   target_cpu_utilization: 0.65
+#   max_instances: 1  # Maximum number of instances to be created
+
+# basic_scaling:
+#   max_instances: 1
+#   idle_timeout: 5m
+
+# # Optional: If you want to specify manual scaling settings
+manual_scaling:
+  instances: 1
+
+# Optional: For environment variables
+# env_variables:
+#   VARIABLE_NAME: "value"
+
+# Optional: For handling URL routing and request handling
+handlers:
+- url: /.*
+  script: auto
+
+# Optional: For specifying resources and instance class (default is F2)
+# resources:
+#   cpu: 1
+#   memory_gb: 0.5
+#   disk_size_gb: 10
+#   instance_class: F2
+
+# Optional: For specifying service entrypoint (useful for custom runtimes)
+entrypoint: /opt/Godot_v3.5.1-stable_linux_server.64 -v -d --main-pack /opt/bomber_linux_export.pck --server
+
+# Optional: For handling inbound and outbound network traffic
+# inbound_services:
+# - warmup
+
+# Optional: For health checks and readiness checks
+# readiness_check:
+#   path: "/_ah/health"
+#   check_interval_sec: 5
+#   timeout_sec: 4
+#   failure_threshold: 2
+#   success_threshold: 2
+#   app_start_timeout_sec: 300
+
+# Optional: For setting custom headers
+# headers:
+#   X-Frame-Options: DENY
+
+# Optional: For handling URL redirects
+# url_handlers:
+# - url: /example_path
+#   static_dir: path/to/static/dir
+
+# Optional: For instance startup parameters
+# instance_startup_timeout_sec: 180
+
+# Optional: For enabling request concurrency
+# request_concurrency:
+#   max_concurrent_requests: 50
+
+# Optional: For error handlers
+# error_handlers:
+# - error_code: 500
+#   file: error_pages/500.html
+
+# Optional: For VPC access (Requires App Engine VPC Access Connector)
+# vpc_access_connector:
+#   name: projects/PROJECT_ID/locations/REGION/connectors/CONNECTOR_NAME
+
+# Optional: For connecting to a Cloud SQL instance
+# beta_settings:
+#   cloud_sql_instances: CONNECTION_NAME
+
+# Optional: For specifying service network settings
+# network:
+#   instance_tag: TAG_NAME
+
+# Optional: For setting a service scaling type (e.g., basic, automatic)
+# scaling_type: automatic
+
+# Optional: For service ingress settings
+# ingress_settings: all
+
+# service: YOUR_SERVICE_NAME  # Replace with your desired service name

@@ -1,33 +1,25 @@
 steps:
 # Docker build
-- name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1', '-f', 'builds/Dockerfile-server', '.' ]
-  id: build
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1', '-f', 'builds/Dockerfile-server', '.' ]
+#   id: build
 
-# Run unit tests inside the docker container
-# - name: 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/quickstart-image:tag1'
-#   entrypoint: python
-#   args: ["-m", "pytest", "chap2"] 
+# # Run unit tests inside the docker container
+# # - name: 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/quickstart-image:tag1'
+# #   entrypoint: python
+# #   args: ["-m", "pytest", "chap2"] 
 
-# Docker Push
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1']
+# # Docker Push
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: ['push', 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1']
 
-# Deploy the image in a cloud run container
+# Deploy the image in a cloud app engine container
 - name: 'gcr.io/cloud-builders/gcloud'
   args:
-  - 'run'
+  - 'app'
   - 'deploy'
-  - 'cloudrunservice'
-  - '--image'
-  - 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1'
-  - '--region'
-  - 'europe-west1'
-  - '--platform'
-  - 'managed'
-  - '--allow-unauthenticated'
-  - '--port'
-  - '10567'
+  - 'builds/app.yaml'
+  - '--image-url=europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1'
 
 images:
 - 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1'

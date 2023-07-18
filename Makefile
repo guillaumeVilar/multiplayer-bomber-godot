@@ -28,3 +28,7 @@ docker-rm-server:
 	docker container stop godot-server
 	docker container rm godot-server
 	docker image rm godot-server
+
+# =========================== GCP SECTION ===========================
+gcp-trigger-build:
+	gcloud builds submit --config builds/cloudbuild.yaml
