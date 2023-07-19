@@ -1,17 +1,17 @@
 steps:
 # Docker build
-# - name: 'gcr.io/cloud-builders/docker'
-#   args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1', '-f', 'builds/Dockerfile-server', '.' ]
-#   id: build
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1', '-f', 'builds/Dockerfile-server', '.' ]
+  id: build
 
-# # Run unit tests inside the docker container
-# # - name: 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/quickstart-image:tag1'
-# #   entrypoint: python
-# #   args: ["-m", "pytest", "chap2"] 
+# # # Run unit tests inside the docker container
+# # # - name: 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/quickstart-image:tag1'
+# # #   entrypoint: python
+# # #   args: ["-m", "pytest", "chap2"] 
 
-# # Docker Push
-# - name: 'gcr.io/cloud-builders/docker'
-#   args: ['push', 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1']
+# Docker Push
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1']
 
 # Deploy the image in a cloud app engine container
 - name: 'gcr.io/cloud-builders/gcloud'
@@ -20,7 +20,51 @@ steps:
   - 'deploy'
   - 'builds/app.yaml'
   - '--image-url=europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1'
+  - '--service-account=app-engine-service-account@just-amp-373710.iam.gserviceaccount.com'
+  - '--promote'
 
-images:
-- 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1'
+# Get the current IP of the deployed server
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: "bash"
+  args: 
+  - "-c"
+  - |
+     gcloud app instances  list --format="json"
+
+# Add a 3 minutes delay between deployment and deletion to let app engine stabilize
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: "bash"
+  args:
+    - "-c"
+    - |
+       sleep 180
+
+# Check if there is some PENDING operation in app engine
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: "bash"
+  args: 
+  - "-c"
+  - |
+     gcloud app operations list --filter=status=PENDING --format=json
+
+
+# Delete the last updated versions of the service
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: "bash"
+  args: 
+  - "-c"
+  - |
+     gcloud app versions list --format="value(version.id)" --sort-by="~version.createTime" | tail -n +2 | xargs -r gcloud app versions delete --quiet
+
+
+# Get the current IP of the deployed server
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: "bash"
+  args: 
+  - "-c"
+  - |
+     gcloud app instances  list --format="json"
+
+# images:
+# - 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1'
 
