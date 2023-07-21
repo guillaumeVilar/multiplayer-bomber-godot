@@ -32,3 +32,6 @@ docker-rm-server:
 # =========================== GCP SECTION ===========================
 gcp-trigger-build:
 	gcloud builds submit --config builds/cloudbuild.yaml
+
+gcp-deploy-cloud-function:
+	gcloud functions deploy stopAppEngineService --runtime python311 --entry-point=stop_appengine_service --source ./builds/gcp/stop_app_engine --trigger-http --allow-unauthenticated --max-instances=1 --memory=128Mi --gen2 --region europe-west1
