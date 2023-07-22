@@ -41,13 +41,10 @@ def get_versions_in_appengine_service(service):
     return [ version['id'] for version in versions['versions'] ]
 
 
-@functions_framework.http
-def stop_appengine_service(request):
+def stop_or_start_appengine_service(servingStatus="STOPPED"):
     """
-    Cloud Function to start an App Engine service.
-    Triggered via HTTP request.
+    Cloud Function to start or stop the App Engine service.
     """
-
     # Authenticate using the App Engine Admin API scope
     credentials = get_app_engine_credentials()
     service = discovery.build('appengine', 'v1', credentials=credentials)
@@ -60,7 +57,24 @@ def stop_appengine_service(request):
             servicesId=SERVICE_ID,
             versionsId=version,
             updateMask='servingStatus',
-            body={'servingStatus': "STOPPED"}
+            body={'servingStatus': servingStatus}
         ).execute()
 
-    return f'Stopped App Engine service: {SERVICE_ID} with versions: {service_versions}'
+    return f'{servingStatus} App Engine service: {SERVICE_ID} with versions: {service_versions}'
+
+
+@functions_framework.http
+def stop_appengine_service(request):
+    """
+    Entry function to stop the app engine service.
+    Triggered via HTTP request.
+    """
+    return stop_or_start_appengine_service("STOPPED")
+
+@functions_framework.http
+def start_appengine_service(request):
+    """
+    Entry function to start the app engine service.
+    Triggered via HTTP request.
+    """
+    return stop_or_start_appengine_service("SERVING")
