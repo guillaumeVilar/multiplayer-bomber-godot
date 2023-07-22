@@ -65,6 +65,16 @@ steps:
   - |
      gcloud app instances  list --format="json"
 
+# Stop the deployed service with a cloud function
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+  - 'functions'
+  - 'call'
+  - 'stopAppEngineService'
+  - '--region=europe-west1'
+  - '--project=just-amp-373710'
+  - '--gen2'
+
 # images:
 # - 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1'
 
