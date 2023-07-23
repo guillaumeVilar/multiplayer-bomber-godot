@@ -31,11 +31,11 @@ handlers:
   script: auto
 
 # Optional: For specifying resources and instance class (default is F2)
-# resources:
-#   cpu: 1
-#   memory_gb: 0.5
-#   disk_size_gb: 10
-#   instance_class: F2
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+  instance_class: F2
 
 # Optional: For specifying service entrypoint (useful for custom runtimes)
 entrypoint: /opt/Godot_v3.5.1-stable_linux_server.64 -v -d --main-pack /opt/bomber_linux_export.pck --server
