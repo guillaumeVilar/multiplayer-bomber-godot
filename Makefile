@@ -21,10 +21,10 @@ launch-godot:
 # ========================== CLIENT HTML DOCKER SECTION =========================
 docker-build-html-client: ## Build client container
 	godot --path $(shell pwd) --export "HTML5" $(shell pwd)/builds/client-html/index.html
-	docker build -f builds/DockerfileClient -t godot-client .
+	docker build -f builds/Dockerfile-client -t godot-client .
 
 docker-run-html-client: ## Run client container
-	docker run --name=godot-client --restart unless-stopped --network host --volume "$(shell pwd)/builds/client-html:/usr/share/nginx/html" --volume "$(shell pwd)/logs:/tmp/logs" -d -t godot-client
+	docker run --name=godot-client --restart unless-stopped --network host --volume "$(shell pwd)/logs:/tmp/logs" -d -t godot-client
 	xdg-open http://127.0.0.1
 
 docker-rm-client:
