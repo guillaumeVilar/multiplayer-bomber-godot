@@ -205,7 +205,7 @@ func host_game():
 	
 
 
-func join_game(ip, new_player_name):
+func join_game(new_player_name):
 	local_player["name"] = new_player_name
 	client = WebSocketClient.new();
 	# var url = "wss://" + ip + ":" + str(DEFAULT_PORT) 

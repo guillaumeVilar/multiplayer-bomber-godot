@@ -8,26 +8,6 @@ func _ready():
 	gamestate.connect("player_list_changed", self, "refresh_lobby")
 	gamestate.connect("game_ended", self, "_on_game_ended")
 	gamestate.connect("game_error", self, "_on_game_error")
-	# Set the player name according to the system username. Fallback to the path.
-	if OS.has_environment("USERNAME"):
-		$Connect/Name.text = OS.get_environment("USERNAME")
-	else:
-		var desktop_path = OS.get_system_dir(0).replace("\\", "/").split("/")
-		$Connect/Name.text = desktop_path[desktop_path.size() - 2]
-
-
-func _on_host_pressed():
-	if $Connect/Name.text == "":
-		$Connect/ErrorLabel.text = "Invalid name!"
-		return
-
-	$Connect.hide()
-	$Players.show()
-	$Connect/ErrorLabel.text = ""
-
-	# var player_name = $Connect/Name.text
-	gamestate.host_game()
-	refresh_lobby()
 
 
 func _on_join_pressed():
@@ -35,17 +15,11 @@ func _on_join_pressed():
 		$Connect/ErrorLabel.text = "Invalid name!"
 		return
 
-	var ip = $Connect/IPAddress.text
-	if not ip.is_valid_ip_address():
-		$Connect/ErrorLabel.text = "Invalid IP address!"
-		return
-
 	$Connect/ErrorLabel.text = ""
-	$Connect/Host.disabled = true
 	$Connect/Join.disabled = true
 
 	var player_name = $Connect/Name.text
-	gamestate.join_game(ip, player_name)
+	gamestate.join_game(player_name)
 
 
 func _on_connection_success():
@@ -91,14 +65,6 @@ func refresh_lobby():
 		$Players/List.add_item(p["name"] + " - " + ready_status_string)
 
 	$Players/Start.disabled = not get_tree().is_network_server()
-
-
-func _on_start_pressed():
-	gamestate.begin_game()
-
-
-func _on_find_public_ip_pressed():
-	OS.shell_open("https://icanhazip.com/")
 
 
 func _on_Ready_pressed():
