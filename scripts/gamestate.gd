@@ -208,8 +208,10 @@ func host_game():
 func join_game(ip, new_player_name):
 	local_player["name"] = new_player_name
 	client = WebSocketClient.new();
-	# var url = "ws://" + ip + str(DEFAULT_PORT) # You use "ws://" at the beginning of the address for WebSocket connections
-	var url = "ws://" + ip + ":" + str(DEFAULT_PORT) 
+	# var url = "wss://" + ip + ":" + str(DEFAULT_PORT) 
+	# We are connecting here to the websocket behind the GCP app run deployment
+	# This is done so we have a secure web socket with the security automatically handled by the GCP App run environment.
+	var url = "wss://multiplayer-bomberman-server-hwyxubwqlq-ew.a.run.app:443"
 	var error = client.connect_to_url(url, PoolStringArray(), true);
 	print(error)
 	get_tree().set_network_peer(client);
