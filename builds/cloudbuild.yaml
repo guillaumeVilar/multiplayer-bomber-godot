@@ -4,76 +4,26 @@ steps:
   args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1', '-f', 'builds/Dockerfile-server', '.' ]
   id: build
 
-# # # Run unit tests inside the docker container
-# # # - name: 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/quickstart-image:tag1'
-# # #   entrypoint: python
-# # #   args: ["-m", "pytest", "chap2"] 
-
 # Docker Push
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1']
 
-# Deploy the image in a cloud app engine container
+# Deploy the server image in a cloud run container
 - name: 'gcr.io/cloud-builders/gcloud'
   args:
-  - 'app'
+  - 'run'
   - 'deploy'
-  - 'builds/app.yaml'
-  - '--image-url=europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1'
-  - '--service-account=app-engine-service-account@just-amp-373710.iam.gserviceaccount.com'
-  - '--promote'
-
-# Get the current IP of the deployed server
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: "bash"
-  args: 
-  - "-c"
-  - |
-     gcloud app instances  list --format="json"
-
-# Add a 3 minutes delay between deployment and deletion to let app engine stabilize
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: "bash"
-  args:
-    - "-c"
-    - |
-       sleep 180
-
-# Check if there is some PENDING operation in app engine
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: "bash"
-  args: 
-  - "-c"
-  - |
-     gcloud app operations list --filter=status=PENDING --format=json
-
-
-# Delete the last updated versions of the service
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: "bash"
-  args: 
-  - "-c"
-  - |
-     gcloud app versions list --format="value(version.id)" --sort-by="~version.createTime" | tail -n +2 | xargs -r gcloud app versions delete --quiet
-
-
-# Get the current IP of the deployed server
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: "bash"
-  args: 
-  - "-c"
-  - |
-     gcloud app instances  list --format="json"
-
-# Stop the deployed service with a cloud function
-- name: 'gcr.io/cloud-builders/gcloud'
-  args:
-  - 'functions'
-  - 'call'
-  - 'stopAppEngineService'
-  - '--region=europe-west1'
-  - '--project=just-amp-373710'
-  - '--gen2'
+  - 'multiplayer-bomberman-server'
+  - '--image'
+  - 'europe-west1-docker.pkg.dev/just-amp-373710/quickstart-docker-repo/godot-server:v1'
+  - '--region'
+  - 'europe-west1'
+  - '--platform'
+  - 'managed'
+  - '--allow-unauthenticated'
+  - '--max-instances=1'
+  - '--port'
+  - '10567'
 
 # ====================================== CLIENT SECTION ======================================
 # Docker build
@@ -97,5 +47,6 @@ steps:
   - '--platform'
   - 'managed'
   - '--allow-unauthenticated'
+  - '--max-instances=1'
   - '--port'
   - '80'
