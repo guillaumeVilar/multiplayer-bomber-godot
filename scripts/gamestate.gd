@@ -25,6 +25,9 @@ var local_player = {"name": "The Warrior", "ready": false}
 var players = {}
 var players_ready = []
 
+# Instanciate server and client to null
+var server = null
+var client = null
 
 func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")
@@ -40,6 +43,17 @@ func _ready():
 		print("Server starting up detected!")
 		host_game()
 		# lobby.get_node("Lobby")._on_host_pressed()
+
+func _process(delta):
+	# Pulling information as a server:
+	if server != null:
+		if server.is_listening(): # is_listening is true when the server is active and listening
+			var error = server.poll();
+	else:
+		if client != null:
+			if (client.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED || client.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
+				client.poll();
+
 
 # Callback from SceneTree.
 func _player_connected(id):
@@ -185,16 +199,20 @@ func local_player_is_ready_to_start_from_lobby():
 
 
 func host_game():
-	peer = NetworkedMultiplayerENet.new()
-	peer.create_server(DEFAULT_PORT, MAX_PEERS)
-	get_tree().set_network_peer(peer)
+	server = WebSocketServer.new();
+	server.listen(DEFAULT_PORT, PoolStringArray(), true);
+	get_tree().set_network_peer(server)
+	
 
 
 func join_game(ip, new_player_name):
 	local_player["name"] = new_player_name
-	peer = NetworkedMultiplayerENet.new()
-	peer.create_client(ip, DEFAULT_PORT)
-	get_tree().set_network_peer(peer)
+	client = WebSocketClient.new();
+	# var url = "ws://" + ip + str(DEFAULT_PORT) # You use "ws://" at the beginning of the address for WebSocket connections
+	var url = "ws://" + ip + ":" + str(DEFAULT_PORT) 
+	var error = client.connect_to_url(url, PoolStringArray(), true);
+	print(error)
+	get_tree().set_network_peer(client);
 
 
 func get_player_list():
