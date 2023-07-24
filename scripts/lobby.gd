@@ -61,8 +61,6 @@ func refresh_lobby():
 		ready_status_string = "Ready" if p["ready"] else "Not ready"
 		$Players/List.add_item(p["name"] + " - " + ready_status_string)
 
-	$Players/Start.disabled = not get_tree().is_network_server()
-
 
 func _on_Ready_pressed():
 	print("Ready button has been pressed")
