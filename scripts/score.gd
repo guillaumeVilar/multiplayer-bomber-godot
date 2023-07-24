@@ -17,6 +17,23 @@ func _process(_delta):
 		$"../Winner".set_text("THE WINNER IS:\n" + winner_name)
 		$"../Winner".show()
 
+	var number_of_player_alive_and_name_last_player = get_number_of_player_alive_and_name_last_player()
+	if number_of_player_alive_and_name_last_player["nb_player_alive"] == 1 && player_labels.size() != 1:
+		$"../Winner".set_text("THE WINNER IS:\n" + number_of_player_alive_and_name_last_player["last_alive_player_name"])
+		$"../Winner".show()
+	if number_of_player_alive_and_name_last_player["nb_player_alive"] == 0:
+		$"../Winner".set_text("THERE IS NO WINNER IN THIS GAME")
+		$"../Winner".show()
+
+func get_number_of_player_alive_and_name_last_player():
+	var number_of_player_alive = 0
+	var player_name_alive = ""
+	for player in player_labels:
+		if player_labels[player].health > 0:
+			number_of_player_alive += 1
+			player_name_alive = player_labels[player].name
+	return {"nb_player_alive": number_of_player_alive, "last_alive_player_name": player_name_alive}
+
 # Return the label to display.
 func get_score_label_for_player(player_id):
 	var player = player_labels[player_id]
