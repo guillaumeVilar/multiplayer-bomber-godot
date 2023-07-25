@@ -23,7 +23,7 @@ func _ready():
 func _physics_process(_delta):
 	var motion = Vector2()
 
-	if is_network_master():
+	if is_network_master() && current_health >= 1:
 		if Input.is_action_pressed("move_left"):
 			motion += Vector2(-1, 0)
 		if Input.is_action_pressed("move_right"):
@@ -88,6 +88,9 @@ remotesync func setup_bomb(bomb_name, pos, by_who):
 puppet func stun():
 	stunned = true
 	current_health -= 1
+	# Delete current node if health is 0 or below (the player is dead)
+	if current_health <= 0:
+		queue_free()
 
 
 master func exploded(_by_who):
