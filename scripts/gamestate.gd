@@ -29,6 +29,10 @@ var players_ready = []
 var server = null
 var client = null
 
+# Web socket connection to the backend server - to run in local swap the 2 below lines
+# var url ="ws://localhost:10567"
+var url = "wss://multiplayer-bomberman-server-hwyxubwqlq-ew.a.run.app:443"
+
 func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")
 	get_tree().connect("network_peer_disconnected", self,"_player_disconnected")
@@ -208,10 +212,9 @@ func host_game():
 func join_game(new_player_name):
 	local_player["name"] = new_player_name
 	client = WebSocketClient.new();
-	# var url = "wss://" + ip + ":" + str(DEFAULT_PORT) 
 	# We are connecting here to the websocket behind the GCP app run deployment
 	# This is done so we have a secure web socket with the security automatically handled by the GCP App run environment.
-	var url = "wss://multiplayer-bomberman-server-hwyxubwqlq-ew.a.run.app:443"
+	print("Connecting to url: " + url)
 	var error = client.connect_to_url(url, PoolStringArray(), true);
 	print(error)
 	get_tree().set_network_peer(client);
