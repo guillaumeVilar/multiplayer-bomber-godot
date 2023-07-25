@@ -13,3 +13,6 @@ Renderer: GLES 2
 ## Screenshot
 
 ![Screenshot](screenshots/bomber.png)
+
+## Author
+Guillaume Vilar 
