@@ -21,15 +21,16 @@ func _on_join_pressed():
 	var player_name = $Connect/Name.text
 	gamestate.join_game(player_name)
 
-
 func _on_connection_success():
 	$Connect.hide()
 	$Players.show()
+	print("Connection is a success - add local player to server")
+	gamestate.addLocalPlayerToServer()
 
 
 func _on_connection_failed():
 	$Connect/Join.disabled = false
-	$Connect/ErrorLabel.set_text("Connection failed.")
+	$Connect/ErrorLabel.set_text("Connection failed - a game is already running.")
 
 
 func _on_game_ended():
@@ -43,6 +44,8 @@ func _on_game_error(errtxt):
 	$ErrorDialog.dialog_text = errtxt
 	$ErrorDialog.popup_centered_minsize()
 	$Connect/Join.disabled = false
+	$Connect.show()
+	$Players.hide()
 
 
 func refresh_lobby():
@@ -50,16 +53,16 @@ func refresh_lobby():
 	$Players/List.clear()
 
 	# Display local player on top
-	var local_player = gamestate.get_local_player()
-	var ready_status_string = "Ready" if local_player["ready"] else "Not ready"
-	$Players/List.add_item(local_player["name"] + " - " + ready_status_string + " - (You)")
-	
+	var local_player_id = gamestate.get_local_player_id()
+
 	# Get all player list from gamestate object
-	var players = gamestate.get_player_list()
-	players.sort()
-	for p in players:
-		ready_status_string = "Ready" if p["ready"] else "Not ready"
-		$Players/List.add_item(p["name"] + " - " + ready_status_string)
+	var players = gamestate.get_player_dict()
+	for p_id in players:
+		var status_string = "Ready" if players[p_id]["ready"] else "Not ready"
+		if p_id == local_player_id:
+			status_string = status_string + " - (You)"
+
+		$Players/List.add_item(players[p_id]["name"] + " - " + status_string)
 
 
 func _on_Ready_pressed():

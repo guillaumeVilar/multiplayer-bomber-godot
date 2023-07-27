@@ -14,10 +14,10 @@ var prev_bombing = false
 var bomb_index = 0
 var current_health = MAX_HEALTH
 
-
 func _ready():
 	stunned = false
 	puppet_pos = position
+	gamestate.connect("game_ended_on_server", self, "_on_game_ended_on_server")
 
 
 func _physics_process(_delta):
@@ -104,3 +104,7 @@ master func exploded(_by_who):
 
 func set_player_name(new_name):
 	get_node("label").set_text(new_name)
+
+# Delete the player object when the game is finished on the server side
+func _on_game_ended_on_server():
+	queue_free()
