@@ -167,8 +167,6 @@ remote func pre_start_game(spawn_points):
 	if not get_tree().is_network_server():
 		# Tell server we are ready to start.
 		rpc_id(1, "ready_to_start", get_tree().get_network_unique_id())
-	elif players.size() == 0:
-		post_start_game()
 
 
 remote func post_start_game():
@@ -186,6 +184,8 @@ remote func ready_to_start(id):
 	if not id in players_ready:
 		players_ready.append(id)
 
+	print("players_ready: " + str(players_ready))
+	print("players" + str(players))
 	if players_ready.size() == players.size():
 		for p in players:
 			rpc_id(p, "post_start_game")
@@ -270,7 +270,6 @@ func begin_game():
 
 func end_game_on_server():
 	if get_tree().is_network_server():
-		get_tree().set_refuse_new_network_connections(false)
 		rpc("disconnectClient")
 		end_game()
 	emit_signal("game_ended_on_server")
@@ -283,6 +282,8 @@ func end_game():
 	emit_signal("game_ended")
 	players.clear()
 	isGameCurrentlyRunning = false
+	players_ready = []
+	get_tree().set_refuse_new_network_connections(false)
 	# get_tree().set_refuse_new_network_connections(false)
 
 # Disconnect the client from the server
