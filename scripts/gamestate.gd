@@ -169,27 +169,11 @@ remote func pre_start_game(spawn_points):
 		rpc_id(1, "ready_to_start", get_tree().get_network_unique_id())
 
 
-remote func post_start_game():
-	isGameCurrentlyRunning = true
-	print("isGameCurrentlyRunning value: " + str(isGameCurrentlyRunning))
-	# refusing new connection when the game is already started
-	# if get_tree().is_network_server():
-	get_tree().set_refuse_new_network_connections(true)
-	get_tree().set_pause(false) # Unpause and unleash the game!
-
-
+# The readyness is done - not allowing new players to join until the game is finished
 remote func ready_to_start(id):
 	assert(get_tree().is_network_server())
-
-	if not id in players_ready:
-		players_ready.append(id)
-
-	print("players_ready: " + str(players_ready))
-	print("players" + str(players))
-	if players_ready.size() == players.size():
-		for p in players:
-			rpc_id(p, "post_start_game")
-		post_start_game()
+	print("On server - not allowing any new connection until the game ends")
+	get_tree().set_refuse_new_network_connections(true)
 
 func are_all_players_ready():
 	for p in players:
