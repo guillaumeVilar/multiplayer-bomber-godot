@@ -1,8 +1,11 @@
-.PHONY: export-linux export-server-linux export-client-linux run-client-linux run-server-linux docker-client-build docker-client-run docker-client-rm docker-client-update docker-server-build docker-server-run docker-server-rm docker-server-update
+.PHONY: export-linux export-server-linux export-client-linux run-client-linux run-server-linux docker-client-build docker-client-run docker-client-rm docker-client-update docker-server-build docker-server-run docker-server-rm docker-server-update export-client-html export-all-for-gcp
 
 # ========================== LOCAL CLIENT SECTION (no docker) =========================
 export-linux:
 	godot --path $(shell pwd) --export "Linux/X11" $(shell pwd)/builds/bomber_linux_export.x86_64
+
+export-client-html:
+	godot --path $(shell pwd) --export "HTML5" $(shell pwd)/builds/client-html/index.html
 
 run-server-linux: 
 	$(shell pwd)/builds/bomber_linux_export.x86_64 --server
@@ -17,6 +20,8 @@ export-client-linux: export-linux run-client-linux
 
 launch-godot:
 	godot project.godot
+
+export-all-for-gcp: export-client-html export-linux
 
 # ========================== CLIENT HTML DOCKER SECTION =========================
 docker-client-build: ## Build client container
