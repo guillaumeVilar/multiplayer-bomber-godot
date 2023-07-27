@@ -35,6 +35,7 @@ func _on_connection_failed():
 
 func _on_game_ended():
 	show()
+	$Connect/ErrorLabel.set_text("")
 	$Connect.show()
 	$Players.hide()
 	$Connect/Join.disabled = false
