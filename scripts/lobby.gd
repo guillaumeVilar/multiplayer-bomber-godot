@@ -57,6 +57,14 @@ func _on_game_ended():
 	$Connect/Join.disabled = false
 
 
+	var lobbyPlayer = $lobbyPlayer.new()
+	add_child(lobbyPlayer) 
+	var keyboard = $TextureRect.new()
+	add_child(keyboard)
+	var areas = $Node2D.new()
+	add_child(areas)
+
+
 func _on_game_error(errtxt):
 	$Connect/ErrorLabel.text = errtxt
 	$ErrorDialog.dialog_text = errtxt
