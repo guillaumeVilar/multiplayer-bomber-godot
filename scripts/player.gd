@@ -3,6 +3,10 @@ extends KinematicBody2D
 
 const MOTION_SPEED = 150.0
 const MAX_HEALTH = 5
+const CHARACTER_INDEX_TO_PATH = {
+	1: "res://assets/charwalk.png",
+	2: "res://assets/betty.png"
+}
 
 puppet var puppet_pos = Vector2()
 puppet var puppet_motion = Vector2()
@@ -13,6 +17,12 @@ var current_anim = ""
 var prev_bombing = false
 var bomb_index = 0
 var current_health = MAX_HEALTH
+
+
+func init(index_char):
+	var file_path_character = CHARACTER_INDEX_TO_PATH[index_char]
+	get_node("sprite").texture = load(file_path_character)
+
 
 func _ready():
 	stunned = false

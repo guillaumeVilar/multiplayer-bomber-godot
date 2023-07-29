@@ -1,5 +1,6 @@
 extends Control
 
+var index_char_selected = 1
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -69,3 +70,21 @@ func refresh_lobby():
 func _on_Ready_pressed():
 	print("Ready button has been pressed")
 	gamestate.local_player_is_ready_to_start_from_lobby()
+
+func reset_all_other_character_selected_and_call_gamestate():
+	var index_char = 1
+	for button in $Players/Character_Choice.get_children():
+		if index_char != index_char_selected:
+			button.pressed = false
+		index_char = index_char + 1
+	gamestate.local_player_change_character(index_char_selected)
+		
+func _on_Char1_pressed():
+	print("Char 1 selected")
+	index_char_selected = 1
+	reset_all_other_character_selected_and_call_gamestate()
+
+func _on_Char2_pressed():
+	print("Char 2 selected")
+	index_char_selected = 2
+	reset_all_other_character_selected_and_call_gamestate()

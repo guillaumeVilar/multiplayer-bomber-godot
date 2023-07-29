@@ -24,7 +24,7 @@ var isGameCurrentlyRunning = false
 # Name for my player.
 var local_player = {"name": "The Warrior", "ready": false}
 
-# Names for remote players in {id:{name: <name>, ready: <true/false>}} format.
+# Names for remote players in {id:{"name": <name>, "ready": <true/false>, "char_index": 1}} format.
 remote var players = {}
 var players_ready = []
 
@@ -80,7 +80,7 @@ remote func addPlayer(new_player_name):
 	if not get_tree().is_network_server() || isGameCurrentlyRunning:
 		return
 	var id = get_tree().get_rpc_sender_id()
-	players[id] = {"name": new_player_name, "ready": false}
+	players[id] = {"name": new_player_name, "ready": false, "char_index": 1}
 	print("Player with id: " + str(id) + " - adding the name: " + new_player_name)
 	# Sync the players var among all the clients
 	rset("players", players)
@@ -146,6 +146,8 @@ remote func pre_start_game(spawn_points):
 	for p_id in spawn_points:
 		var spawn_pos = world.get_node("SpawnPoints/" + str(spawn_points[p_id])).position
 		var player = player_scene.instance()
+		# Instantiate the character sprite chosen
+		player.init(players[p_id]["char_index"])
 
 		player.set_name(str(p_id)) # Use unique ID as node name.
 		player.position=spawn_pos
@@ -182,10 +184,16 @@ func are_all_players_ready():
 	return true
 
 # Run on the server and all peers to update the list of player. The caller is now ready.
-remote func update_player_list_ready_from_lobby():
+remote func update_players_dict_on_server(players_from_client):
 	var id = get_tree().get_rpc_sender_id()
-	print("On remote - function update player with id: " + str(id))
-	players[id]["ready"] = !players[id]["ready"]
+	print("On server - function update player with id: " + str(id))
+	players[id] = players_from_client[id]
+
+	# Sync the players var among all the clients
+	rset("players", players)
+	for p in players:
+		rpc_id(p, "check_current_players")
+
 	# Refreshing on remote end with new list of player
 	emit_signal("player_list_changed")
 
@@ -205,9 +213,17 @@ func local_player_is_ready_to_start_from_lobby():
 	players[local_id]["ready"] = !players[local_id]["ready"]
 	print("players: " + str(players))
 	# Run update_player_list_ready_from_lobby on all other peers to update info for local player
-	rpc("update_player_list_ready_from_lobby")
+	rpc_id(1, "update_players_dict_on_server", players)
 	# Refreshing locally list of player
 	emit_signal("player_list_changed")
+
+
+func local_player_change_character(char_selected):
+	print("local player - new character selected: " + str(char_selected))
+	var local_id = get_tree().get_network_unique_id()
+	players[local_id]["char_index"] = char_selected
+	# Run update_player_list_ready_from_lobby on all other peers to update info for local player
+	rpc_id(1, "update_players_dict_on_server", players)
 
 
 func host_game():

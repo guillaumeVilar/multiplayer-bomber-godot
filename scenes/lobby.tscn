@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/lobby.gd" type="Script" id=1]
+[ext_resource path="res://assets/icon.png" type="Texture" id=2]
+[ext_resource path="res://scenes/new_theme.tres" type="Theme" id=3]
+[ext_resource path="res://assets/betty_icon.jpg" type="Texture" id=4]
 
 [node name="Lobby" type="Control"]
 anchor_right = 1.0
@@ -60,6 +63,33 @@ make sure the port 10567 in UDP
 is forwarded on your router."
 align = 1
 
+[node name="Character_Choice" type="Control" parent="Players"]
+margin_left = 253.0
+margin_top = 3.0
+margin_right = 535.0
+margin_bottom = 141.0
+
+[node name="Char1" type="Button" parent="Players/Character_Choice"]
+margin_left = 25.0
+margin_top = 7.0
+margin_right = 101.0
+margin_bottom = 77.0
+theme = ExtResource( 3 )
+toggle_mode = true
+pressed = true
+icon = ExtResource( 2 )
+expand_icon = true
+
+[node name="Char2" type="Button" parent="Players/Character_Choice"]
+margin_left = 117.0
+margin_top = 7.5
+margin_right = 193.0
+margin_bottom = 77.5
+theme = ExtResource( 3 )
+toggle_mode = true
+icon = ExtResource( 4 )
+expand_icon = true
+
 [node name="Connect" type="Panel" parent="."]
 anchor_left = 0.464
 anchor_top = 0.48
@@ -115,4 +145,6 @@ size_flags_horizontal = 2
 size_flags_vertical = 2
 
 [connection signal="pressed" from="Players/Ready" to="." method="_on_Ready_pressed"]
+[connection signal="pressed" from="Players/Character_Choice/Char1" to="." method="_on_Char1_pressed"]
+[connection signal="pressed" from="Players/Character_Choice/Char2" to="." method="_on_Char2_pressed"]
 [connection signal="pressed" from="Connect/Join" to="." method="_on_join_pressed"]
