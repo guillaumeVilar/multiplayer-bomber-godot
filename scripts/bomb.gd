@@ -41,5 +41,5 @@ func disable_kinematic_collision():
 	get_node("KinematicBody").get_node("CollisionShape2D").disabled = false
 
 
-func _on_AreaCollision_body_exited(_body):
+func _on_BombAreaCollision_body_exited(_body):
 	call_deferred("disable_kinematic_collision")

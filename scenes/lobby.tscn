@@ -1,18 +1,15 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/lobby.gd" type="Script" id=1]
 [ext_resource path="res://scenes/lobbyplayer.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scripts/letterArea.gd" type="Script" id=3]
 [ext_resource path="res://assets/keybordbg-removebg.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 24.4375, 25.5 )
+extents = Vector2( 14.5955, 9.9846 )
 
 [node name="Lobby" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -3.0
-margin_right = -3.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource( 1 )
@@ -152,37 +149,344 @@ size_flags_vertical = 2
 window_title = "Alerte !"
 
 [node name="lobbyPlayer" parent="." instance=ExtResource( 2 )]
-position = Vector2( 203, 83 )
+position = Vector2( 145, 110 )
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2( 3, 0 )
 
-[node name="A" type="Area2D" parent="Node2D"]
-position = Vector2( 300, 299 )
-scale = Vector2( 0.420526, 0.452513 )
-script = ExtResource( 3 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/A"]
-position = Vector2( -237, 113 )
-shape = SubResource( 1 )
-
 [node name="S" type="Area2D" parent="Node2D"]
 position = Vector2( 339, 235 )
-script = ExtResource( 3 )
-letter_name = "s"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/S"]
+show_behind_parent = true
 position = Vector2( -77, 115 )
 shape = SubResource( 1 )
+one_way_collision_margin = 0.0
 
 [node name="D" type="Area2D" parent="Node2D"]
 position = Vector2( 400, 235 )
-script = ExtResource( 3 )
-letter_name = "d"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/D"]
+show_behind_parent = true
 position = Vector2( -77, 115 )
 shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="A" type="Area2D" parent="Node2D"]
+position = Vector2( 678, 470 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/A"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="Q" type="Area2D" parent="Node2D"]
+position = Vector2( 739, 470 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Q"]
+show_behind_parent = true
+position = Vector2( -551, -179 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="W" type="Area2D" parent="Node2D"]
+position = Vector2( 325, 175 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/W"]
+show_behind_parent = true
+position = Vector2( -77, 115 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="E" type="Area2D" parent="Node2D"]
+position = Vector2( 787, 407 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/E"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="R" type="Area2D" parent="Node2D"]
+position = Vector2( 336, 235 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/R"]
+show_behind_parent = true
+position = Vector2( 36, 54 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="T" type="Area2D" parent="Node2D"]
+position = Vector2( 397, 235 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/T"]
+show_behind_parent = true
+position = Vector2( 35, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="Y" type="Area2D" parent="Node2D"]
+position = Vector2( 969, 408 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Y"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="U" type="Area2D" parent="Node2D"]
+position = Vector2( 336, 235 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/U"]
+show_behind_parent = true
+position = Vector2( 219, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="I" type="Area2D" parent="Node2D"]
+position = Vector2( 397, 235 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/I"]
+show_behind_parent = true
+position = Vector2( 218, 54 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="O" type="Area2D" parent="Node2D"]
+position = Vector2( 1153, 408 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/O"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="F" type="Area2D" parent="Node2D"]
+position = Vector2( 347, 296 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/F"]
+show_behind_parent = true
+position = Vector2( 35, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="G" type="Area2D" parent="Node2D"]
+position = Vector2( 919, 469 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/G"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="H" type="Area2D" parent="Node2D"]
+position = Vector2( 286, 296 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/H"]
+show_behind_parent = true
+position = Vector2( 219, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="J" type="Area2D" parent="Node2D"]
+position = Vector2( 347, 296 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/J"]
+show_behind_parent = true
+position = Vector2( 218, 54 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="K" type="Area2D" parent="Node2D"]
+position = Vector2( 1103, 469 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/K"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="Z" type="Area2D" parent="Node2D"]
+position = Vector2( 214, 355 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Z"]
+show_behind_parent = true
+position = Vector2( 35, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="X" type="Area2D" parent="Node2D"]
+position = Vector2( 786, 528 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/X"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="C" type="Area2D" parent="Node2D"]
+position = Vector2( 153, 355 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/C"]
+show_behind_parent = true
+position = Vector2( 219, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="V" type="Area2D" parent="Node2D"]
+position = Vector2( 214, 355 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/V"]
+show_behind_parent = true
+position = Vector2( 218, 54 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="B" type="Area2D" parent="Node2D"]
+position = Vector2( 970, 528 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/B"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="L" type="Area2D" parent="Node2D"]
+position = Vector2( 1166, 469 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/L"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="P" type="Area2D" parent="Node2D"]
+position = Vector2( 1214, 406 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/P"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="1" type="Area2D" parent="Node2D"]
+position = Vector2( 709, 409 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/1"]
+show_behind_parent = true
+position = Vector2( -551, -179 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="2" type="Area2D" parent="Node2D"]
+position = Vector2( 295, 114 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/2"]
+show_behind_parent = true
+position = Vector2( -77, 115 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="3" type="Area2D" parent="Node2D"]
+position = Vector2( 757, 346 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/3"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="4" type="Area2D" parent="Node2D"]
+position = Vector2( 306, 174 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/4"]
+show_behind_parent = true
+position = Vector2( 36, 54 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="5" type="Area2D" parent="Node2D"]
+position = Vector2( 367, 174 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/5"]
+show_behind_parent = true
+position = Vector2( 35, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="6" type="Area2D" parent="Node2D"]
+position = Vector2( 939, 347 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/6"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="7" type="Area2D" parent="Node2D"]
+position = Vector2( 306, 174 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/7"]
+show_behind_parent = true
+position = Vector2( 219, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="8" type="Area2D" parent="Node2D"]
+position = Vector2( 367, 174 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/8"]
+show_behind_parent = true
+position = Vector2( 218, 54 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="9" type="Area2D" parent="Node2D"]
+position = Vector2( 1123, 347 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/9"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="0" type="Area2D" parent="Node2D"]
+position = Vector2( 1184, 345 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/0"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="N" type="Area2D" parent="Node2D"]
+position = Vector2( 1030, 531 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/N"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="M" type="Area2D" parent="Node2D"]
+position = Vector2( 1091, 529 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/M"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="Enter" type="Area2D" parent="Node2D"]
+position = Vector2( 678, 470 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Enter"]
+show_behind_parent = true
+position = Vector2( 111, -118 )
+scale = Vector2( 3.7482, 1.66743 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
 
 [node name="TextureRect" type="TextureRect" parent="."]
 show_behind_parent = true
@@ -196,9 +500,40 @@ texture = ExtResource( 4 )
 [connection signal="pressed" from="Players/Character_Choice/Char1" to="." method="_on_Char1_pressed"]
 [connection signal="pressed" from="Players/Character_Choice/Char2" to="." method="_on_Char2_pressed"]
 [connection signal="pressed" from="Connect/Join" to="." method="_on_join_pressed"]
-[connection signal="area_entered" from="Node2D/A" to="lobbyPlayer" method="_on_Area2D_area_entered"]
-[connection signal="area_exited" from="Node2D/A" to="lobbyPlayer" method="_on_Area2D_area_exited"]
-[connection signal="area_entered" from="Node2D/S" to="lobbyPlayer" method="_on_Area2D_area_entered"]
-[connection signal="area_exited" from="Node2D/S" to="lobbyPlayer" method="_on_Area2D_area_exited"]
-[connection signal="area_entered" from="Node2D/D" to="lobbyPlayer" method="_on_Area2D_area_entered"]
-[connection signal="area_exited" from="Node2D/D" to="lobbyPlayer" method="_on_Area2D_area_exited"]
+[connection signal="area_entered" from="Node2D/S" to="." method="_on_S_area_entered"]
+[connection signal="area_entered" from="Node2D/D" to="." method="_on_D_area_entered"]
+[connection signal="area_entered" from="Node2D/A" to="." method="_on_A_area_entered"]
+[connection signal="area_entered" from="Node2D/Q" to="." method="_on_Q_area_entered"]
+[connection signal="area_entered" from="Node2D/W" to="." method="_on_W_area_entered"]
+[connection signal="area_entered" from="Node2D/E" to="." method="_on_E_area_entered"]
+[connection signal="area_entered" from="Node2D/R" to="." method="_on_R_area_entered"]
+[connection signal="area_entered" from="Node2D/T" to="." method="_on_T_area_entered"]
+[connection signal="area_entered" from="Node2D/Y" to="." method="_on_Y_area_entered"]
+[connection signal="area_entered" from="Node2D/U" to="." method="_on_U_area_entered"]
+[connection signal="area_entered" from="Node2D/I" to="." method="_on_I_area_entered"]
+[connection signal="area_entered" from="Node2D/O" to="." method="_on_O_area_entered"]
+[connection signal="area_entered" from="Node2D/F" to="." method="_on_F_area_entered"]
+[connection signal="area_entered" from="Node2D/G" to="." method="_on_G_area_entered"]
+[connection signal="area_entered" from="Node2D/H" to="." method="_on_H_area_entered"]
+[connection signal="area_entered" from="Node2D/J" to="." method="_on_J_area_entered"]
+[connection signal="area_entered" from="Node2D/K" to="." method="_on_K_area_entered"]
+[connection signal="area_entered" from="Node2D/Z" to="." method="_on_Z_area_entered"]
+[connection signal="area_entered" from="Node2D/X" to="." method="_on_X_area_entered"]
+[connection signal="area_entered" from="Node2D/C" to="." method="_on_C_area_entered"]
+[connection signal="area_entered" from="Node2D/V" to="." method="_on_V_area_entered"]
+[connection signal="area_entered" from="Node2D/B" to="." method="_on_B_area_entered"]
+[connection signal="area_entered" from="Node2D/L" to="." method="_on_L_area_entered"]
+[connection signal="area_entered" from="Node2D/P" to="." method="_on_P_area_entered"]
+[connection signal="area_entered" from="Node2D/1" to="." method="_on_1_area_entered"]
+[connection signal="area_entered" from="Node2D/2" to="." method="_on_2_area_entered"]
+[connection signal="area_entered" from="Node2D/3" to="." method="_on_3_area_entered"]
+[connection signal="area_entered" from="Node2D/4" to="." method="_on_4_area_entered"]
+[connection signal="area_entered" from="Node2D/5" to="." method="_on_5_area_entered"]
+[connection signal="area_entered" from="Node2D/6" to="." method="_on_6_area_entered"]
+[connection signal="area_entered" from="Node2D/7" to="." method="_on_7_area_entered"]
+[connection signal="area_entered" from="Node2D/8" to="." method="_on_8_area_entered"]
+[connection signal="area_entered" from="Node2D/9" to="." method="_on_9_area_entered"]
+[connection signal="area_entered" from="Node2D/0" to="." method="_on_0_area_entered"]
+[connection signal="area_entered" from="Node2D/N" to="." method="_on_N_area_entered"]
+[connection signal="area_entered" from="Node2D/M" to="." method="_on_M_area_entered"]
+[connection signal="area_entered" from="Node2D/Enter" to="." method="_on_Enter_area_entered"]

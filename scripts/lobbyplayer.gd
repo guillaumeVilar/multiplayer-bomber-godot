@@ -43,9 +43,18 @@ func _physics_process(_delta):
 		get_node("anim").play(current_anim)
 	
 	move_and_slide(velocity*speed)
-	for i in get_slide_count():
-		var collision = get_slide_collision(i)
-		print("Collided with: ", collision.collider.name)
+	
+	var lobby = get_node("/root/Lobby")
+
+	var bounds_y_bot = lobby.rect_size.y  
+	var bounds_x_right = lobby.rect_size.x 
+	
+	global_position.y = clamp(global_position.y, 0, bounds_y_bot)
+	global_position.x = clamp(global_position.x, 0, bounds_x_right)
+#	
+#	for i in get_slide_count():
+#		var collision = get_slide_collision(i)
+#		print("Collided with: ", collision.collider.name)
 	
 	var bombing = Input.is_action_pressed("set_bomb")
 	if bombing and not prev_bombing:
@@ -63,25 +72,3 @@ func setup_bomb(bomb_name, pos):
 	bomb.position = pos
 	# No need to set network master to bomb, will be owned by server by default
 	get_node("../..").add_child(bomb)
-	
-
-	
-func _on_Area2D_area_entered(area):
-	#$CollisionShape2D.set_deferred("disabled", true)
-
-	var current_name = get_node("label").text
-	var areas = area.get_overlapping_areas()
-	#var overlapping_areas = areas.filter(is_letter_area)
-	#var overlapping_areas = areas.filter((func(overlapping_area): "letter_name" in overlapping_area))
-	for overlapping_area in areas:
-		if "letter_name" in overlapping_area: 
-			var letter_area = overlapping_area
-			var new_name = current_name + letter_area.letter_name
-			set_player_name(new_name)
-			get_node("/root/Lobby/Connect/Name").set_text(new_name)
-
-func _on_Area2D_area_exited(area):
-	pass
-
-func is_letter_area(overlapping_area):
-	 return "letter_name" in overlapping_area
