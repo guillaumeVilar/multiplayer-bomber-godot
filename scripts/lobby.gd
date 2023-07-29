@@ -23,7 +23,8 @@ func _on_join_pressed():
 	$Connect/Join.disabled = true
 	
 	$lobbyPlayer.queue_free()
-	$TextureRect.hide()
+	$Node2D.queue_free()
+	$TextureRect.queue_free()
 
 	var player_name = $Connect/Name.text
 	$Connect/ErrorLabel.text = "Loading..."

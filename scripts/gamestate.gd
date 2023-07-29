@@ -33,8 +33,8 @@ var server = null
 var client = null
 
 # Web socket connection to the backend server - to run in local swap the 2 below lines
-# var url ="ws://localhost:10567"
-var url = "wss://multiplayer-bomberman-server-hwyxubwqlq-ew.a.run.app:443"
+var url ="ws://localhost:10567"
+#var url = "wss://multiplayer-bomberman-server-hwyxubwqlq-ew.a.run.app:443"
 
 func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")
