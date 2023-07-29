@@ -22,8 +22,7 @@ func _on_join_pressed():
 	$Connect/ErrorLabel.text = ""
 	$Connect/Join.disabled = true
 	
-	$lobbyPlayer.pause_mode = 1
-	$lobbyPlayer.hide()
+	$lobbyPlayer.queue_free()
 	$TextureRect.hide()
 
 	var player_name = $Connect/Name.text
@@ -104,7 +103,7 @@ func _on_Char2_pressed():
 	print("Char 2 selected")
 	index_char_selected = 2
 	reset_all_other_character_selected_and_call_gamestate()
-	
+
 func do_bomb_collision(area, areaName):
 	if area.name != "BombAreaCollision":
 		return

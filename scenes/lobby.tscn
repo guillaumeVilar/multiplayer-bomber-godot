@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/lobby.gd" type="Script" id=1]
 [ext_resource path="res://scenes/lobbyplayer.tscn" type="PackedScene" id=2]
@@ -81,7 +81,6 @@ margin_bottom = 77.0
 theme = ExtResource( 3 )
 toggle_mode = true
 pressed = true
-icon = ExtResource( 2 )
 expand_icon = true
 
 [node name="Char2" type="Button" parent="Players/Character_Choice"]
@@ -122,7 +121,6 @@ margin_right = 175.5
 margin_bottom = 78.5
 size_flags_horizontal = 2
 size_flags_vertical = 2
-editable = false
 
 [node name="Join" type="Button" parent="Connect"]
 margin_left = 71.5
