@@ -9,6 +9,9 @@ func _ready():
 	gamestate.connect("player_list_changed", self, "refresh_lobby")
 	gamestate.connect("game_ended", self, "_on_game_ended")
 	gamestate.connect("game_error", self, "_on_game_error")
+	if "--server" in OS.get_cmdline_args():
+		print("Server starting up detected in lobby - disabling UI!")
+		server_disable_UI()
 
 
 func _on_join_pressed():
@@ -20,6 +23,7 @@ func _on_join_pressed():
 	$Connect/Join.disabled = true
 
 	var player_name = $Connect/Name.text
+	$Connect/ErrorLabel.text = "Loading..."
 	gamestate.join_game(player_name)
 
 func _on_connection_success():
@@ -31,8 +35,15 @@ func _on_connection_success():
 
 func _on_connection_failed():
 	$Connect/Join.disabled = false
-	$Connect/ErrorLabel.set_text("Connection failed - a game is already running.")
+	$Connect/ErrorLabel.set_text("Connection failed")
 
+func server_disable_UI():
+	print("Server instance - disabling UI components")
+	$Connect/Name.hide()
+	$Connect/ErrorLabel.text = "SERVER INSTANCE"
+	$Connect/NameLabel.text = "SERVER INSTANCE"
+	$Connect/Join.disabled = true
+	
 
 func _on_game_ended():
 	show()
@@ -43,6 +54,7 @@ func _on_game_ended():
 
 
 func _on_game_error(errtxt):
+	$Connect/ErrorLabel.text = errtxt
 	$ErrorDialog.dialog_text = errtxt
 	$ErrorDialog.popup_centered_minsize()
 	$Connect/Join.disabled = false
