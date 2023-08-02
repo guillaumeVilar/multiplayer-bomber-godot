@@ -66,13 +66,13 @@ func _process(delta):
 func _player_connected(id):
 	print("Player connected ID: " + str(id))
 
-	# If this node is the server check if the game is currently running - if yes, disconnect the new client
-	if get_tree().get_network_unique_id() == 1:
-		# From server, send information if the game has already started and disconnect client
-		if isGameCurrentlyRunning:
-			print("Disconnecting client with id: " + str(id))
-			rpc_id(id, "disconnectClient")
-			return
+	# # If this node is the server check if the game is currently running - if yes, disconnect the new client
+	# if get_tree().get_network_unique_id() == 1:
+	# 	# From server, send information if the game has already started and disconnect client
+	# 	if isGameCurrentlyRunning:
+	# 		print("Disconnecting client with id: " + str(id))
+	# 		rpc_id(id, "disconnectClient")
+	# 		return
 
 
 remote func addPlayer(new_player_name):
@@ -90,26 +90,77 @@ remote func addPlayer(new_player_name):
 
 # Callback from SceneTree.
 func _player_disconnected(id):
-	if has_node("/root/World"): # Game is in progress.
+	print("Player disconnected with id: " + str(id))
+	print("Is /root/World presnet? " + str(has_node("/root/World")))
+	print("Current players dict: " + str(players))
+
+	# End game if game is in progress and a player disconnected
+	if has_node("/root/World") && id in players: 
 		if get_tree().is_network_server():
 			# TODO: To fix to support new format.
+			print("Game Error - ending game from server - player disconnected is: " + players[id])
 			emit_signal("game_error", "Player " + players[id] + " disconnected")
-			end_game()
-	else: # Game is not in progress.
+			end_game_on_server()
+	else: # Game was not in progress.
 		# Unregister this player.
 		unregister_player(id)
+
+
+# Client function to let the customer check if able to login
+func client_wait_for_server_confirmation():
+	rpc_id(1, "server_check_client_authorize_to_connect")
+
+# Server function to check if the client is authorize to connect.
+# If yes, continue as normal
+# If no, disconnect the clien with an error message
+remote func server_check_client_authorize_to_connect():
+	var id_sender = get_tree().get_rpc_sender_id()
+	print("Checking if client [" + str(id_sender) + "] is authorize to join - game currently running: " + str(isGameCurrentlyRunning))
+	# If the game is already running - disconnect the client
+	if isGameCurrentlyRunning:
+		var reason = "Game is already running"
+		rpc_id(id_sender, "is_client_authorize_from_server", false, reason)
+		print("Disconnecting peer with id: [" + str(id_sender) + "] - reason: " + reason)
+		# server.disconnect_peer(id_sender, 1000, reason)
+	else:
+		# Client authorize to continue to connect
+		print("Client [" + str(id_sender) + "] is authorize to join")
+		rpc_id(id_sender, "is_client_authorize_from_server", true, "")
+		emit_signal("connection_succeeded")
+
+
+# Client function to disconnect the client from the server or continue connection
+remote func is_client_authorize_from_server(is_client_authorize, reason):
+	# If client is not authorize, disconnect and display error message
+	print("Client is authorize to join from server: " + str(is_client_authorize) + " - reason: " + reason)
+	if !is_client_authorize:
+		# This is not an ideal way to disconnect client - however it is the only way for the server not to crash.
+		# Things that I tried: client.disconnect_from_host and server.disconnect_peer.
+		# To check if that is fixed in 4.0 or 4.1 - in the meantime we will use that in the client side. 
+		# This is not cheat safe (as basically we are telling the client to disconnect instead of disconnecting from server).
+		get_tree().network_peer = null
+		# client.disconnect_from_host(1000, reason)
+		emit_signal("game_error", reason)
+	# If client is authorize, emit signal connection succeeded and carry on
+	else:
+		emit_signal("connection_succeeded")
 
 
 # Callback from SceneTree, only for clients (not server).
 func _connected_ok():
 	# We just connected to a server
-	emit_signal("connection_succeeded")
+	print("Connection ok on server")
+	client_wait_for_server_confirmation()
+	# emit_signal("connection_succeeded")
 
 
 # Callback from SceneTree, only for clients (not server).
 func _server_disconnected():
 	emit_signal("game_error", "Server disconnected")
 	end_game()
+
+func _client_disconnected(id, was_clean_close):
+	print("Client with id: [" + str(id) + "] disconnected - was_clean_close: " + str(was_clean_close))
 
 
 # Callback from SceneTree, only for clients (not server).
@@ -119,10 +170,9 @@ func _connected_fail():
 
 
 # Lobby management functions.
-
 remote func register_player(new_player_name):
 	var id = get_tree().get_rpc_sender_id()
-	print(id)
+	print("player id: " + str(id))
 	players[id] = {"name": new_player_name, "ready": false}
 	print("Player with id: " + str(id) + " - adding the name: " + new_player_name)
 	emit_signal("player_list_changed")
@@ -175,7 +225,8 @@ remote func pre_start_game(spawn_points):
 remote func ready_to_start(id):
 	assert(get_tree().is_network_server())
 	print("On server - not allowing any new connection until the game ends")
-	get_tree().set_refuse_new_network_connections(true)
+	isGameCurrentlyRunning = true
+	# get_tree().set_refuse_new_network_connections(true)
 
 func are_all_players_ready():
 	for p in players:
@@ -240,7 +291,7 @@ func join_game(new_player_name):
 	# This is done so we have a secure web socket with the security automatically handled by the GCP App run environment.
 	print("Connecting to url: " + url)
 	var error = client.connect_to_url(url, PoolStringArray(), true);
-	print(error)
+	print("Error: " + error)
 	get_tree().set_network_peer(client);
 
 
@@ -275,6 +326,7 @@ func end_game_on_server():
 	emit_signal("game_ended_on_server")
 
 func end_game():
+	print("Game is finished - allowing new players to join")
 	if has_node("/root/World"): # Game is in progress.
 		# End it
 		get_node("/root/World").queue_free()
@@ -283,12 +335,12 @@ func end_game():
 	players.clear()
 	isGameCurrentlyRunning = false
 	players_ready = []
-	get_tree().set_refuse_new_network_connections(false)
 	# get_tree().set_refuse_new_network_connections(false)
 
 # Disconnect the client from the server
 remote func disconnectClient():
 	client.disconnect_from_host()
+	end_game()
 	# emit_signal("game_error", "Disconnecting from server")
 
 func addLocalPlayerToServer():
