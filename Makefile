@@ -18,6 +18,11 @@ export-server-linux: export-linux run-server-linux
 
 export-client-linux: export-linux run-client-linux
 
+export-then-run-server-client: export-linux
+	konsole --noclose  -e $(shell pwd)/builds/bomber_linux_export.x86_64 --server &
+	konsole --noclose  -e $(shell pwd)/builds/bomber_linux_export.x86_64 & 
+	konsole --noclose  -e $(shell pwd)/builds/bomber_linux_export.x86_64
+
 launch-godot:
 	godot project.godot
 
