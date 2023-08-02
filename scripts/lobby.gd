@@ -2,6 +2,8 @@ extends Control
 
 var index_char_selected = 1
 
+var lobby_player_id = null
+
 func _ready():
 	# Called every time the node is added to the scene.
 	gamestate.connect("connection_failed", self, "_on_connection_failed")
@@ -13,6 +15,28 @@ func _ready():
 		print("Server starting up detected in lobby - disabling UI!")
 		server_disable_UI()
 
+func get_lobby_player():
+	if lobby_player_id == null:
+		return get_node("lobbyPlayer")
+	print(lobby_player_id)
+	return get_node("lobbyPlayer" + str(lobby_player_id))
+
+func disable_keyboard_zones(node:Node) -> void:
+	node.pause_mode = true
+	node.hide()
+	node.set_physics_process(false)
+	for child in node.get_children():
+		child.set_deferred("monitoring", false)
+		child.set_deferred("monitorable", false)
+
+	
+func enable_keyboard_zones(node:Node) -> void:
+	node.pause_mode = false
+	node.show()
+	node.set_physics_process(true)
+	for child in node.get_children():
+		child.set_deferred("monitoring", true)
+		child.set_deferred("monitorable", true)
 
 func _on_join_pressed():
 	if $Connect/Name.text == "":
@@ -22,9 +46,9 @@ func _on_join_pressed():
 	$Connect/ErrorLabel.text = ""
 	$Connect/Join.disabled = true
 	
-	$lobbyPlayer.queue_free()
-	$Node2D.queue_free()
-	$TextureRect.queue_free()
+	free_lobby_player()
+	disable_keyboard_zones($keyboardZones)
+	$TextureRect.hide()
 
 	var player_name = $Connect/Name.text
 	$Connect/ErrorLabel.text = "Loading..."
@@ -55,14 +79,10 @@ func _on_game_ended():
 	$Connect.show()
 	$Players.hide()
 	$Connect/Join.disabled = false
-
-
-	var lobbyPlayer = $lobbyPlayer.new()
-	add_child(lobbyPlayer) 
-	var keyboard = $TextureRect.new()
-	add_child(keyboard)
-	var areas = $Node2D.new()
-	add_child(areas)
+	instanciate_lobby_player()
+	enable_keyboard_zones($keyboardZones)
+	$TextureRect.show()
+	
 
 
 func _on_game_error(errtxt):
@@ -116,15 +136,25 @@ func _on_Char2_pressed():
 func do_bomb_collision(area, areaName):
 	if area.name != "BombAreaCollision":
 		return
-	var current_name = $lobbyPlayer.get_node("label").text
+	var current_name = get_lobby_player().get_node("label").text
 	if current_name.length() >= 16:
 		return
 	if current_name.length() <= 0:
 		areaName = areaName.to_upper()
 		
 	var new_name = current_name + areaName
-	$lobbyPlayer.set_player_name(new_name)
+	get_lobby_player().set_player_name(new_name)
 	get_node("/root/Lobby/Connect/Name").set_text(new_name)
+	
+func free_lobby_player():
+	get_lobby_player().queue_free()
+
+func instanciate_lobby_player():
+	var scene = load("res://scenes/lobbyplayer.tscn")
+	var instance = scene.instance()
+	lobby_player_id = instance.get_instance_id()
+	instance.set_name("lobbyPlayer" + str(lobby_player_id))
+	add_child(instance, true)
 
 	
 func _on_A_area_entered(area):
