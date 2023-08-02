@@ -138,3 +138,4 @@ shape = SubResource( 6 )
 
 [connection signal="body_entered" from="." to="." method="_on_bomb_body_enter"]
 [connection signal="body_exited" from="." to="." method="_on_bomb_body_exit"]
+[connection signal="body_exited" from="BombAreaCollision" to="." method="_on_BombAreaCollision_body_exited"]
