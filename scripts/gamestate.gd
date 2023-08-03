@@ -291,7 +291,7 @@ func join_game(new_player_name):
 	# This is done so we have a secure web socket with the security automatically handled by the GCP App run environment.
 	print("Connecting to url: " + url)
 	var error = client.connect_to_url(url, PoolStringArray(), true);
-	print("Error: " + error)
+	print("Error: " + str(error))
 	get_tree().set_network_peer(client);
 
 
@@ -340,8 +340,6 @@ func end_game():
 # Disconnect the client from the server
 remote func disconnectClient():
 	client.disconnect_from_host()
-	end_game()
-	# emit_signal("game_error", "Disconnecting from server")
 
 func addLocalPlayerToServer():
 	print("Adding local player to server: " + str(local_player))
