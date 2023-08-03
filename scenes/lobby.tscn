@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/lobby.gd" type="Script" id=1]
-[ext_resource path="res://assets/icon.png" type="Texture" id=2]
+[ext_resource path="res://scenes/lobbyplayer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/new_theme.tres" type="Theme" id=3]
 [ext_resource path="res://assets/betty_icon.jpg" type="Texture" id=4]
+[ext_resource path="res://assets/keybordbg-removebg.png" type="Texture" id=5]
+[ext_resource path="res://assets/icon.png" type="Texture" id=6]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 14.5955, 9.9846 )
 
 [node name="Lobby" type="Control"]
 anchor_right = 1.0
@@ -77,7 +82,7 @@ margin_bottom = 77.0
 theme = ExtResource( 3 )
 toggle_mode = true
 pressed = true
-icon = ExtResource( 2 )
+icon = ExtResource( 6 )
 expand_icon = true
 
 [node name="Char2" type="Button" parent="Players/Character_Choice"]
@@ -95,10 +100,10 @@ anchor_left = 0.464
 anchor_top = 0.48
 anchor_right = 0.464
 anchor_bottom = 0.48
-margin_left = -101.136
-margin_top = -71.0
-margin_right = 101.864
-margin_bottom = 96.0
+margin_left = -86.136
+margin_top = -284.0
+margin_right = 120.864
+margin_bottom = -122.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 
@@ -143,8 +148,394 @@ margin_right = 55.0
 margin_bottom = 58.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
+window_title = "Alerte !"
+
+[node name="lobbyPlayer" parent="." instance=ExtResource( 2 )]
+position = Vector2( 145, 110 )
+
+[node name="keyboardZones" type="Node2D" parent="."]
+position = Vector2( 3, 0 )
+
+[node name="S" type="Area2D" parent="keyboardZones"]
+position = Vector2( 339, 235 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/S"]
+show_behind_parent = true
+position = Vector2( -77, 115 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="D" type="Area2D" parent="keyboardZones"]
+position = Vector2( 400, 235 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/D"]
+show_behind_parent = true
+position = Vector2( -77, 115 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="A" type="Area2D" parent="keyboardZones"]
+position = Vector2( 678, 470 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/A"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="Q" type="Area2D" parent="keyboardZones"]
+position = Vector2( 739, 470 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/Q"]
+show_behind_parent = true
+position = Vector2( -551, -179 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="W" type="Area2D" parent="keyboardZones"]
+position = Vector2( 325, 175 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/W"]
+show_behind_parent = true
+position = Vector2( -77, 115 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="E" type="Area2D" parent="keyboardZones"]
+position = Vector2( 787, 407 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/E"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="R" type="Area2D" parent="keyboardZones"]
+position = Vector2( 336, 235 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/R"]
+show_behind_parent = true
+position = Vector2( 36, 54 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="T" type="Area2D" parent="keyboardZones"]
+position = Vector2( 397, 235 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/T"]
+show_behind_parent = true
+position = Vector2( 35, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="Y" type="Area2D" parent="keyboardZones"]
+position = Vector2( 969, 408 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/Y"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="U" type="Area2D" parent="keyboardZones"]
+position = Vector2( 336, 235 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/U"]
+show_behind_parent = true
+position = Vector2( 219, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="I" type="Area2D" parent="keyboardZones"]
+position = Vector2( 397, 235 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/I"]
+show_behind_parent = true
+position = Vector2( 218, 54 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="O" type="Area2D" parent="keyboardZones"]
+position = Vector2( 1153, 408 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/O"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="F" type="Area2D" parent="keyboardZones"]
+position = Vector2( 347, 296 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/F"]
+show_behind_parent = true
+position = Vector2( 35, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="G" type="Area2D" parent="keyboardZones"]
+position = Vector2( 919, 469 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/G"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="H" type="Area2D" parent="keyboardZones"]
+position = Vector2( 286, 296 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/H"]
+show_behind_parent = true
+position = Vector2( 219, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="J" type="Area2D" parent="keyboardZones"]
+position = Vector2( 347, 296 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/J"]
+show_behind_parent = true
+position = Vector2( 218, 54 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="K" type="Area2D" parent="keyboardZones"]
+position = Vector2( 1103, 469 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/K"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="Z" type="Area2D" parent="keyboardZones"]
+position = Vector2( 214, 355 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/Z"]
+show_behind_parent = true
+position = Vector2( 35, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="X" type="Area2D" parent="keyboardZones"]
+position = Vector2( 786, 528 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/X"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="C" type="Area2D" parent="keyboardZones"]
+position = Vector2( 153, 355 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/C"]
+show_behind_parent = true
+position = Vector2( 219, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="V" type="Area2D" parent="keyboardZones"]
+position = Vector2( 214, 355 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/V"]
+show_behind_parent = true
+position = Vector2( 218, 54 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="B" type="Area2D" parent="keyboardZones"]
+position = Vector2( 970, 528 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/B"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="L" type="Area2D" parent="keyboardZones"]
+position = Vector2( 1166, 469 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/L"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="P" type="Area2D" parent="keyboardZones"]
+position = Vector2( 1214, 406 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/P"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="1" type="Area2D" parent="keyboardZones"]
+position = Vector2( 709, 409 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/1"]
+show_behind_parent = true
+position = Vector2( -551, -179 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="2" type="Area2D" parent="keyboardZones"]
+position = Vector2( 295, 114 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/2"]
+show_behind_parent = true
+position = Vector2( -77, 115 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="3" type="Area2D" parent="keyboardZones"]
+position = Vector2( 757, 346 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/3"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="4" type="Area2D" parent="keyboardZones"]
+position = Vector2( 306, 174 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/4"]
+show_behind_parent = true
+position = Vector2( 36, 54 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="5" type="Area2D" parent="keyboardZones"]
+position = Vector2( 367, 174 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/5"]
+show_behind_parent = true
+position = Vector2( 35, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="6" type="Area2D" parent="keyboardZones"]
+position = Vector2( 939, 347 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/6"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="7" type="Area2D" parent="keyboardZones"]
+position = Vector2( 306, 174 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/7"]
+show_behind_parent = true
+position = Vector2( 219, 57 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="8" type="Area2D" parent="keyboardZones"]
+position = Vector2( 367, 174 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/8"]
+show_behind_parent = true
+position = Vector2( 218, 54 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="9" type="Area2D" parent="keyboardZones"]
+position = Vector2( 1123, 347 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/9"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="0" type="Area2D" parent="keyboardZones"]
+position = Vector2( 1184, 345 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/0"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="N" type="Area2D" parent="keyboardZones"]
+position = Vector2( 1030, 531 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/N"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="M" type="Area2D" parent="keyboardZones"]
+position = Vector2( 1091, 529 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/M"]
+show_behind_parent = true
+position = Vector2( -477, -118 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="Enter" type="Area2D" parent="keyboardZones"]
+position = Vector2( 678, 470 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/Enter"]
+show_behind_parent = true
+position = Vector2( 111, -118 )
+scale = Vector2( 3.7482, 1.66743 )
+shape = SubResource( 1 )
+one_way_collision_margin = 0.0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+show_behind_parent = true
+margin_left = 121.0
+margin_top = 184.0
+margin_right = 877.0
+margin_bottom = 514.0
+texture = ExtResource( 5 )
 
 [connection signal="pressed" from="Players/Ready" to="." method="_on_Ready_pressed"]
 [connection signal="pressed" from="Players/Character_Choice/Char1" to="." method="_on_Char1_pressed"]
 [connection signal="pressed" from="Players/Character_Choice/Char2" to="." method="_on_Char2_pressed"]
 [connection signal="pressed" from="Connect/Join" to="." method="_on_join_pressed"]
+[connection signal="area_entered" from="keyboardZones/S" to="." method="_on_S_area_entered"]
+[connection signal="area_entered" from="keyboardZones/D" to="." method="_on_D_area_entered"]
+[connection signal="area_entered" from="keyboardZones/A" to="." method="_on_A_area_entered"]
+[connection signal="area_entered" from="keyboardZones/Q" to="." method="_on_Q_area_entered"]
+[connection signal="area_entered" from="keyboardZones/W" to="." method="_on_W_area_entered"]
+[connection signal="area_entered" from="keyboardZones/E" to="." method="_on_E_area_entered"]
+[connection signal="area_entered" from="keyboardZones/R" to="." method="_on_R_area_entered"]
+[connection signal="area_entered" from="keyboardZones/T" to="." method="_on_T_area_entered"]
+[connection signal="area_entered" from="keyboardZones/Y" to="." method="_on_Y_area_entered"]
+[connection signal="area_entered" from="keyboardZones/U" to="." method="_on_U_area_entered"]
+[connection signal="area_entered" from="keyboardZones/I" to="." method="_on_I_area_entered"]
+[connection signal="area_entered" from="keyboardZones/O" to="." method="_on_O_area_entered"]
+[connection signal="area_entered" from="keyboardZones/F" to="." method="_on_F_area_entered"]
+[connection signal="area_entered" from="keyboardZones/G" to="." method="_on_G_area_entered"]
+[connection signal="area_entered" from="keyboardZones/H" to="." method="_on_H_area_entered"]
+[connection signal="area_entered" from="keyboardZones/J" to="." method="_on_J_area_entered"]
+[connection signal="area_entered" from="keyboardZones/K" to="." method="_on_K_area_entered"]
+[connection signal="area_entered" from="keyboardZones/Z" to="." method="_on_Z_area_entered"]
+[connection signal="area_entered" from="keyboardZones/X" to="." method="_on_X_area_entered"]
+[connection signal="area_entered" from="keyboardZones/C" to="." method="_on_C_area_entered"]
+[connection signal="area_entered" from="keyboardZones/V" to="." method="_on_V_area_entered"]
+[connection signal="area_entered" from="keyboardZones/B" to="." method="_on_B_area_entered"]
+[connection signal="area_entered" from="keyboardZones/L" to="." method="_on_L_area_entered"]
+[connection signal="area_entered" from="keyboardZones/P" to="." method="_on_P_area_entered"]
+[connection signal="area_entered" from="keyboardZones/1" to="." method="_on_1_area_entered"]
+[connection signal="area_entered" from="keyboardZones/2" to="." method="_on_2_area_entered"]
+[connection signal="area_entered" from="keyboardZones/3" to="." method="_on_3_area_entered"]
+[connection signal="area_entered" from="keyboardZones/4" to="." method="_on_4_area_entered"]
+[connection signal="area_entered" from="keyboardZones/5" to="." method="_on_5_area_entered"]
+[connection signal="area_entered" from="keyboardZones/6" to="." method="_on_6_area_entered"]
+[connection signal="area_entered" from="keyboardZones/7" to="." method="_on_7_area_entered"]
+[connection signal="area_entered" from="keyboardZones/8" to="." method="_on_8_area_entered"]
+[connection signal="area_entered" from="keyboardZones/9" to="." method="_on_9_area_entered"]
+[connection signal="area_entered" from="keyboardZones/0" to="." method="_on_0_area_entered"]
+[connection signal="area_entered" from="keyboardZones/N" to="." method="_on_N_area_entered"]
+[connection signal="area_entered" from="keyboardZones/M" to="." method="_on_M_area_entered"]
+[connection signal="area_entered" from="keyboardZones/Enter" to="." method="_on_Enter_area_entered"]
