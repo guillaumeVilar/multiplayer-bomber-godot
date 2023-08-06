@@ -11,7 +11,7 @@ run-server-linux:
 	$(shell pwd)/builds/bomber_linux_export.x86_64 --server
 
 run-client-linux: 
-	$(shell pwd)/builds/bomber_linux_export.x86_64
+	$(shell pwd)/builds/bomber_linux_export.x86_64 --local
 
 
 export-server-linux: export-linux run-server-linux
@@ -20,8 +20,8 @@ export-client-linux: export-linux run-client-linux
 
 export-then-run-server-client: export-linux
 	konsole --noclose  -e $(shell pwd)/builds/bomber_linux_export.x86_64 --server &
-	konsole --noclose  -e $(shell pwd)/builds/bomber_linux_export.x86_64 & 
-	konsole --noclose  -e $(shell pwd)/builds/bomber_linux_export.x86_64
+	konsole --noclose  -e $(shell pwd)/builds/bomber_linux_export.x86_64 --local & 
+	konsole --noclose  -e $(shell pwd)/builds/bomber_linux_export.x86_64 --local
 
 launch-godot:
 	godot project.godot
