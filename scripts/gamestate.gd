@@ -33,7 +33,7 @@ var server = null
 var client = null
 
 # Web socket connection to the backend server - to run in local swap the 2 below lines
-#var url ="ws://localhost:10567"
+# var url = "ws://localhost:10567"
 var url = "wss://multiplayer-bomberman-server-hwyxubwqlq-ew.a.run.app:443"
 
 func _ready():
@@ -50,6 +50,8 @@ func _ready():
 		print("Server starting up detected!")
 		host_game()
 		# lobby.get_node("Lobby")._on_host_pressed()
+	elif "--local" in OS.get_cmdline_args():
+		url = "ws://localhost:10567"
 
 func _process(delta):
 	# Pulling information as a server:
