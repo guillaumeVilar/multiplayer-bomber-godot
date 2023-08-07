@@ -6,11 +6,11 @@ var lobby_player_id = null
 
 func _ready():
 	# Called every time the node is added to the scene.
-	gamestate.connect("connection_failed", self, "_on_connection_failed")
-	gamestate.connect("connection_succeeded", self, "_on_connection_success")
-	gamestate.connect("player_list_changed", self, "refresh_lobby")
-	gamestate.connect("game_ended", self, "_on_game_ended")
-	gamestate.connect("game_error", self, "_on_game_error")
+	gamestate.connect("connection_failed", Callable(self, "_on_connection_failed"))
+	gamestate.connect("connection_succeeded", Callable(self, "_on_connection_success"))
+	gamestate.connect("player_list_changed", Callable(self, "refresh_lobby"))
+	gamestate.connect("game_ended", Callable(self, "_on_game_ended"))
+	gamestate.connect("game_error", Callable(self, "_on_game_error"))
 	if "--server" in OS.get_cmdline_args():
 		print("Server starting up detected in lobby - disabling UI!")
 		server_disable_UI()
@@ -22,7 +22,7 @@ func get_lobby_player():
 	return get_node("lobbyPlayer" + str(lobby_player_id))
 
 func disable_keyboard_zones(node:Node) -> void:
-	node.pause_mode = true
+	# node.process_mode = true
 	node.hide()
 	node.set_physics_process(false)
 	for child in node.get_children():
@@ -31,7 +31,7 @@ func disable_keyboard_zones(node:Node) -> void:
 
 	
 func enable_keyboard_zones(node:Node) -> void:
-	node.pause_mode = false
+	# node.process_mode = false
 	node.show()
 	node.set_physics_process(true)
 	for child in node.get_children():
@@ -47,7 +47,7 @@ func _on_join_pressed():
 	$Connect/Join.disabled = true
 	
 	free_lobby_player()
-	disable_keyboard_zones($keyboardZones)
+	# disable_keyboard_zones($keyboardZones)
 	$TextureRect.hide()
 
 	var player_name = $Connect/Name.text
@@ -80,7 +80,7 @@ func _on_game_ended():
 	$Players.hide()
 	$Connect/Join.disabled = false
 	instanciate_lobby_player()
-	enable_keyboard_zones($keyboardZones)
+	# enable_keyboard_zones($keyboardZones)
 	$TextureRect.show()
 	
 
@@ -88,7 +88,7 @@ func _on_game_ended():
 func _on_game_error(errtxt):
 	$Connect/ErrorLabel.text = errtxt
 	$ErrorDialog.dialog_text = errtxt
-	$ErrorDialog.popup_centered_minsize()
+	$ErrorDialog.popup_centered_clamped()
 	$Connect/Join.disabled = false
 	$Connect.show()
 	$Players.hide()
@@ -119,7 +119,7 @@ func reset_all_other_character_selected_and_call_gamestate():
 	var index_char = 1
 	for button in $Players/Character_Choice.get_children():
 		if index_char != index_char_selected:
-			button.pressed = false
+			button.button_pressed = false
 		index_char = index_char + 1
 	gamestate.local_player_change_character(index_char_selected)
 		
@@ -151,7 +151,7 @@ func free_lobby_player():
 
 func instanciate_lobby_player():
 	var scene = load("res://scenes/lobbyplayer.tscn")
-	var instance = scene.instance()
+	var instance = scene.instantiate()
 	lobby_player_id = instance.get_instance_id()
 	instance.set_name("lobbyPlayer" + str(lobby_player_id))
 	add_child(instance, true)

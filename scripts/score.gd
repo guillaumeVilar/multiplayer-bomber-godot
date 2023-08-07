@@ -46,13 +46,13 @@ func refresh_score_and_health_for_player(player_id):
 	var pl = player_labels[player_id]
 	pl.label.set_text(get_score_label_for_player(player_id))
 
-remotesync func increase_score(for_who):
+@rpc("any_peer", "call_local") func increase_score(for_who):
 	assert(for_who in player_labels)
 	var pl = player_labels[for_who]
 	pl.score += 1
 	refresh_score_and_health_for_player(for_who)
 
-remotesync func modify_health(player_id, new_health):
+@rpc("any_peer", "call_local") func modify_health(player_id, new_health):
 	print("player_id: " + str(player_id))
 	print("player_labels: " + str(player_labels))
 	assert(player_id in player_labels)
@@ -63,12 +63,12 @@ remotesync func modify_health(player_id, new_health):
 
 func add_player(id, new_player_name):
 	var l = Label.new()
-	l.set_align(Label.ALIGN_CENTER)
+	l.set_align(Label.ALIGNMENT_CENTER)
 	l.set_h_size_flags(SIZE_EXPAND_FILL)
-	var font = DynamicFont.new()
+	var font = FontFile.new()
 	font.set_size(18)
 	font.set_font_data(preload("res://assets/montserrat.otf"))
-	l.add_font_override("font", font)
+	l.add_theme_font_override("font", font)
 	add_child(l)
 
 	player_labels[id] = { name = new_player_name, label = l, score = 0, health = MAX_HEALTH }

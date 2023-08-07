@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 signal hit
 
@@ -42,12 +42,13 @@ func _physics_process(_delta):
 		current_anim = new_anim
 		get_node("anim").play(current_anim)
 	
-	move_and_slide(velocity*speed)
+	set_velocity(velocity*speed)
+	move_and_slide()
 	
 	var lobby = get_node("/root/Lobby")
 
-	var bounds_y_bot = lobby.rect_size.y  
-	var bounds_x_right = lobby.rect_size.x 
+	var bounds_y_bot = lobby.size.y  
+	var bounds_x_right = lobby.size.x 
 	
 	global_position.y = clamp(global_position.y, 0, bounds_y_bot)
 	global_position.x = clamp(global_position.x, 0, bounds_x_right)
@@ -67,7 +68,7 @@ func set_player_name(new_name):
 	get_node("label").set_text(new_name)
 	
 func setup_bomb(bomb_name, pos):
-	var bomb = preload("res://scenes/bomb.tscn").instance()
+	var bomb = preload("res://scenes/bomb.tscn").instantiate()
 	bomb.set_name(bomb_name) # Ensure unique name for the bomb
 	bomb.position = pos
 	# No need to set network master to bomb, will be owned by server by default

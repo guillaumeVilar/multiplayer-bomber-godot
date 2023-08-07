@@ -25,7 +25,7 @@ var isGameCurrentlyRunning = false
 var local_player = {"name": "The Warrior", "ready": false}
 
 # Names for remote players in {id:{"name": <name>, "ready": <true/false>, "char_index": 1}} format.
-remote var players = {}
+var players = {}
 var players_ready = []
 
 # Instanciate server and client to null
@@ -37,11 +37,11 @@ var client = null
 var url = "wss://multiplayer-bomberman-server-hwyxubwqlq-ew.a.run.app:443"
 
 func _ready():
-	get_tree().connect("network_peer_connected", self, "_player_connected")
-	get_tree().connect("network_peer_disconnected", self,"_player_disconnected")
-	get_tree().connect("connected_to_server", self, "_connected_ok")
-	get_tree().connect("connection_failed", self, "_connected_fail")
-	get_tree().connect("server_disconnected", self, "_server_disconnected")
+	multiplayer.peer_connected.connect(self._player_connected)
+	multiplayer.peer_disconnected.connect(self._player_disconnected)
+	multiplayer.connected_to_server.connect(self._connected_ok)
+	multiplayer.connection_failed.connect(self._connected_fail)
+	multiplayer.server_disconnected.connect(self._server_disconnected)
 	if "--server" in OS.get_cmdline_args():
 		# Run your server startup code here...
 		# Using this check, you can start a dedicated server by running
@@ -60,7 +60,7 @@ func _process(delta):
 			var error = server.poll();
 	else:
 		if client != null:
-			if (client.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED || client.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
+			if (client.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED || client.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTING):
 				client.poll();
 
 
@@ -76,16 +76,22 @@ func _player_connected(id):
 	# 		rpc_id(id, "disconnectClient")
 	# 		return
 
+# Function to update the list of players - should be called from the server on the client
+@rpc("authority", "call_remote", "reliable")
+func updatePlayersDict(players_dict_from_server):
+	players = players_dict_from_server
 
-remote func addPlayer(new_player_name):
+
+@rpc("any_peer") 
+func addPlayer(new_player_name):
 	# If the game is not running - the server will send to the rest of the client the information. 
-	if not get_tree().is_network_server() || isGameCurrentlyRunning:
+	if not get_tree().is_server() || isGameCurrentlyRunning:
 		return
-	var id = get_tree().get_rpc_sender_id()
+	var id = get_tree().get_remote_sender_id()
 	players[id] = {"name": new_player_name, "ready": false, "char_index": 1}
 	print("Player with id: " + str(id) + " - adding the name: " + new_player_name)
 	# Sync the players var among all the clients
-	rset("players", players)
+	updatePlayersDict.rpc(players)
 	for p in players:
 		rpc_id(p, "check_current_players")
 
@@ -98,7 +104,7 @@ func _player_disconnected(id):
 
 	# End game if game is in progress and a player disconnected
 	if has_node("/root/World") && id in players: 
-		if get_tree().is_network_server():
+		if get_tree().is_server():
 			# TODO: To fix to support new format.
 			print("Game Error - ending game from server - player disconnected is: " + players[id])
 			emit_signal("game_error", "Player " + players[id] + " disconnected")
@@ -115,8 +121,9 @@ func client_wait_for_server_confirmation():
 # Server function to check if the client is authorize to connect.
 # If yes, continue as normal
 # If no, disconnect the clien with an error message
-remote func server_check_client_authorize_to_connect():
-	var id_sender = get_tree().get_rpc_sender_id()
+@rpc("any_peer") 
+func server_check_client_authorize_to_connect():
+	var id_sender = get_tree().get_remote_sender_id()
 	print("Checking if client [" + str(id_sender) + "] is authorize to join - game currently running: " + str(isGameCurrentlyRunning))
 	# If the game is already running - disconnect the client
 	if isGameCurrentlyRunning:
@@ -132,7 +139,8 @@ remote func server_check_client_authorize_to_connect():
 
 
 # Client function to disconnect the client from the server or continue connection
-remote func is_client_authorize_from_server(is_client_authorize, reason):
+@rpc("any_peer") 
+func is_client_authorize_from_server(is_client_authorize, reason):
 	# If client is not authorize, disconnect and display error message
 	print("Client is authorize to join from server: " + str(is_client_authorize) + " - reason: " + reason)
 	if !is_client_authorize:
@@ -167,13 +175,14 @@ func _client_disconnected(id, was_clean_close):
 
 # Callback from SceneTree, only for clients (not server).
 func _connected_fail():
-	get_tree().set_network_peer(null) # Remove peer
+	multiplayer.multiplayer_peer = null # Remove peer
 	emit_signal("connection_failed")
 
 
 # Lobby management functions.
-remote func register_player(new_player_name):
-	var id = get_tree().get_rpc_sender_id()
+@rpc("any_peer") 
+func register_player(new_player_name):
+	var id = get_tree().get_remote_sender_id()
 	print("player id: " + str(id))
 	players[id] = {"name": new_player_name, "ready": false}
 	print("Player with id: " + str(id) + " - adding the name: " + new_player_name)
@@ -185,10 +194,11 @@ func unregister_player(id):
 	emit_signal("player_list_changed")
 
 
-remote func pre_start_game(spawn_points):
+@rpc("any_peer") 
+func pre_start_game(spawn_points):
 	print("Starting game with player list: " + str(players))
 	# Change scene.
-	var world = load("res://scenes/world.tscn").instance()
+	var world = load("res://scenes/world.tscn").instantiate()
 	get_tree().get_root().add_child(world)
 
 	get_tree().get_root().get_node("Lobby").hide()
@@ -197,15 +207,15 @@ remote func pre_start_game(spawn_points):
 
 	for p_id in spawn_points:
 		var spawn_pos = world.get_node("SpawnPoints/" + str(spawn_points[p_id])).position
-		var player = player_scene.instance()
+		var player = player_scene.instantiate()
 		# Instantiate the character sprite chosen
 		player.init(players[p_id]["char_index"])
 
 		player.set_name(str(p_id)) # Use unique ID as node name.
 		player.position=spawn_pos
-		player.set_network_master(p_id) #set unique id as master.
+		player.set_multiplayer_authority(p_id) #set unique id as master.
 
-		if p_id == get_tree().get_network_unique_id():
+		if p_id == get_tree().get_unique_id():
 			# If node for this peer id, set name.
 			player.set_player_name(local_player["name"])
 		else:
@@ -218,14 +228,15 @@ remote func pre_start_game(spawn_points):
 	for pn in players:
 		world.get_node("Score").add_player(pn, players[pn]["name"])
 
-	if not get_tree().is_network_server():
+	if not get_tree().is_server():
 		# Tell server we are ready to start.
-		rpc_id(1, "ready_to_start", get_tree().get_network_unique_id())
+		rpc_id(1, "ready_to_start", get_tree().get_unique_id())
 
 
 # The readyness is done - not allowing new players to join until the game is finished
-remote func ready_to_start(id):
-	assert(get_tree().is_network_server())
+@rpc("any_peer") 
+func ready_to_start(id):
+	assert(get_tree().is_server())
 	print("On server - not allowing any new connection until the game ends")
 	isGameCurrentlyRunning = true
 	# get_tree().set_refuse_new_network_connections(true)
@@ -237,20 +248,22 @@ func are_all_players_ready():
 	return true
 
 # Run on the server and all peers to update the list of player. The caller is now ready.
-remote func update_players_dict_on_server(players_from_client):
-	var id = get_tree().get_rpc_sender_id()
+@rpc("any_peer") 
+func update_players_dict_on_server(players_from_client):
+	var id = get_tree().get_remote_sender_id()
 	print("On server - function update player with id: " + str(id))
 	players[id] = players_from_client[id]
 
 	# Sync the players var among all the clients
-	rset("players", players)
+	updatePlayersDict.rpc(players)
+
 	for p in players:
 		rpc_id(p, "check_current_players")
 
 	# Refreshing on remote end with new list of player
 	emit_signal("player_list_changed")
 
-	if get_tree().is_network_server():
+	if get_tree().is_server():
 		# Checking if all the players are ready to start the game
 		print("Checking on readyness of player dict: " + str(players))
 		if are_all_players_ready() == true:
@@ -262,7 +275,7 @@ remote func update_players_dict_on_server(players_from_client):
 # This will tell all peers that the local player is ready.
 func local_player_is_ready_to_start_from_lobby():
 	# local_player["ready"] = !local_player["ready"]
-	var local_id = get_tree().get_network_unique_id()
+	var local_id = get_tree().get_unique_id()
 	players[local_id]["ready"] = !players[local_id]["ready"]
 	print("players: " + str(players))
 	# Run update_player_list_ready_from_lobby on all other peers to update info for local player
@@ -273,28 +286,32 @@ func local_player_is_ready_to_start_from_lobby():
 
 func local_player_change_character(char_selected):
 	print("local player - new character selected: " + str(char_selected))
-	var local_id = get_tree().get_network_unique_id()
+	var local_id = get_tree().get_unique_id()
 	players[local_id]["char_index"] = char_selected
 	# Run update_player_list_ready_from_lobby on all other peers to update info for local player
 	rpc_id(1, "update_players_dict_on_server", players)
 
 
 func host_game():
-	server = WebSocketServer.new();
-	server.listen(DEFAULT_PORT, PoolStringArray(), true);
-	get_tree().set_network_peer(server)
+	server = WebSocketMultiplayerPeer.new()
+	server.create_server(DEFAULT_PORT)
+	# server.listen(DEFAULT_PORT, PackedStringArray(), true)
+	get_tree().set_multiplayer_peer(server)
 	
 
 
 func join_game(new_player_name):
+	multiplayer.multiplayer_peer = null
 	local_player["name"] = new_player_name
-	client = WebSocketClient.new();
+	client = WebSocketMultiplayerPeer.new()
 	# We are connecting here to the websocket behind the GCP app run deployment
 	# This is done so we have a secure web socket with the security automatically handled by the GCP App run environment.
 	print("Connecting to url: " + url)
-	var error = client.connect_to_url(url, PoolStringArray(), true);
+	var error = client.create_client(url)
 	print("Error: " + str(error))
-	get_tree().set_network_peer(client);
+	multiplayer.multiplayer_peer = client
+	# get_tree().set_multiplayer_peer(client);
+
 
 
 func get_player_dict():
@@ -302,11 +319,11 @@ func get_player_dict():
 
 
 func get_local_player_id():
-	return get_tree().get_network_unique_id()
+	return get_tree().get_unique_id()
 
 
 func begin_game():
-	assert(get_tree().is_network_server())
+	assert(get_tree().is_server())
 
 	# Create a dictionary with peer id and respective spawn points, could be improved by randomizing.
 	var spawn_points = {}
@@ -322,7 +339,7 @@ func begin_game():
 	pre_start_game(spawn_points)
 
 func end_game_on_server():
-	if get_tree().is_network_server():
+	if get_tree().is_server():
 		rpc("disconnectClient")
 		end_game()
 	emit_signal("game_ended_on_server")
@@ -340,14 +357,16 @@ func end_game():
 	# get_tree().set_refuse_new_network_connections(false)
 
 # Disconnect the client from the server
-remote func disconnectClient():
+@rpc("any_peer") 
+func disconnectClient():
 	client.disconnect_from_host()
 
 func addLocalPlayerToServer():
 	print("Adding local player to server: " + str(local_player))
 	rpc_id(1, "addPlayer", local_player["name"])
 
-remote func check_current_players():
+@rpc("any_peer") 
+func check_current_players():
 	print("Current players: " + str(players))
 	emit_signal("player_list_changed")
 
