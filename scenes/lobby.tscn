@@ -1,502 +1,512 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=8 format=3 uid="uid://bdbxlqc5u0oj6"]
 
-[ext_resource path="res://scripts/lobby.gd" type="Script" id=1]
-[ext_resource path="res://scenes/lobbyplayer.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/new_theme.tres" type="Theme" id=3]
-[ext_resource path="res://assets/betty_icon.jpg" type="Texture" id=4]
-[ext_resource path="res://assets/keybordbg-removebg.png" type="Texture" id=5]
-[ext_resource path="res://assets/icon.png" type="Texture" id=6]
+[ext_resource type="Script" path="res://scripts/lobby.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/lobbyplayer.tscn" id="2"]
+[ext_resource type="Theme" uid="uid://drn6ayqfcw3fr" path="res://scenes/new_theme.tres" id="3"]
+[ext_resource type="Texture2D" uid="uid://bamverm1fcmqs" path="res://assets/betty_icon.jpg" id="4"]
+[ext_resource type="Texture2D" uid="uid://cutvj3ey2w1np" path="res://assets/keybordbg-removebg.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://by8ulj8fpefkb" path="res://assets/icon.png" id="6"]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 14.5955, 9.9846 )
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(14.5955, 9.9846)
 
 [node name="Lobby" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 2
 size_flags_vertical = 2
-script = ExtResource( 1 )
+script = ExtResource("1")
 
 [node name="Players" type="Panel" parent="."]
 visible = false
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -126.0
-margin_top = -177.5
-margin_right = 126.0
-margin_bottom = 177.5
+offset_left = -126.0
+offset_top = -177.5
+offset_right = 126.0
+offset_bottom = 177.5
 size_flags_horizontal = 2
 size_flags_vertical = 2
 
 [node name="Label" type="Label" parent="Players"]
-margin_left = 26.0
-margin_top = 18.0
-margin_right = 142.0
-margin_bottom = 32.0
+layout_mode = 0
+offset_left = 26.0
+offset_top = 18.0
+offset_right = 142.0
+offset_bottom = 32.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "Awaiting Players..."
 
 [node name="Ready" type="Button" parent="Players"]
-margin_left = 86.0
-margin_top = 307.5
-margin_right = 170.0
-margin_bottom = 336.5
+layout_mode = 0
+offset_left = 86.0
+offset_top = 307.5
+offset_right = 170.0
+offset_bottom = 336.5
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Ready"
 
 [node name="List" type="ItemList" parent="Players"]
-margin_left = 25.0
-margin_top = 37.0
-margin_right = 229.0
-margin_bottom = 296.0
+layout_mode = 0
+offset_left = 25.0
+offset_top = 37.0
+offset_right = 229.0
+offset_bottom = 296.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 
 [node name="PortForward" type="Label" parent="Players"]
 visible = false
-margin_left = -124.0
-margin_top = 375.0
-margin_right = 128.0
-margin_bottom = 429.0
-custom_constants/line_spacing = 6
+layout_mode = 0
+offset_left = -124.0
+offset_top = 375.0
+offset_right = 128.0
+offset_bottom = 429.0
+theme_override_constants/line_spacing = 6
 text = "If you want non-LAN clients to connect,
 make sure the port 10567 in UDP
 is forwarded on your router."
-align = 1
 
 [node name="Character_Choice" type="Control" parent="Players"]
-margin_left = 253.0
-margin_top = 3.0
-margin_right = 535.0
-margin_bottom = 141.0
+anchors_preset = 0
+offset_left = 253.0
+offset_top = 3.0
+offset_right = 535.0
+offset_bottom = 141.0
 
 [node name="Char1" type="Button" parent="Players/Character_Choice"]
-margin_left = 25.0
-margin_top = 7.0
-margin_right = 101.0
-margin_bottom = 77.0
-theme = ExtResource( 3 )
+layout_mode = 0
+offset_left = 25.0
+offset_top = 7.0
+offset_right = 101.0
+offset_bottom = 77.0
+theme = ExtResource("3")
 toggle_mode = true
-pressed = true
-icon = ExtResource( 6 )
+icon = ExtResource("6")
 expand_icon = true
 
 [node name="Char2" type="Button" parent="Players/Character_Choice"]
-margin_left = 117.0
-margin_top = 7.5
-margin_right = 193.0
-margin_bottom = 77.5
-theme = ExtResource( 3 )
+layout_mode = 0
+offset_left = 117.0
+offset_top = 7.5
+offset_right = 193.0
+offset_bottom = 77.5
+theme = ExtResource("3")
 toggle_mode = true
-icon = ExtResource( 4 )
+icon = ExtResource("4")
 expand_icon = true
 
 [node name="Connect" type="Panel" parent="."]
+layout_mode = 0
 anchor_left = 0.464
 anchor_top = 0.48
 anchor_right = 0.464
 anchor_bottom = 0.48
-margin_left = -86.136
-margin_top = -284.0
-margin_right = 120.864
-margin_bottom = -122.0
+offset_left = -86.136
+offset_top = -284.0
+offset_right = 120.864
+offset_bottom = -122.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 
 [node name="NameLabel" type="Label" parent="Connect"]
-margin_left = 75.0
-margin_top = 30.0
-margin_right = 117.0
-margin_bottom = 44.0
+layout_mode = 0
+offset_left = 75.0
+offset_top = 30.0
+offset_right = 117.0
+offset_bottom = 44.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "Name:"
 
 [node name="Name" type="LineEdit" parent="Connect"]
-margin_left = 19.5
-margin_top = 54.5
-margin_right = 175.5
-margin_bottom = 78.5
+layout_mode = 0
+offset_left = 19.5
+offset_top = 54.5
+offset_right = 175.5
+offset_bottom = 78.5
 size_flags_horizontal = 2
 size_flags_vertical = 2
 
 [node name="Join" type="Button" parent="Connect"]
-margin_left = 71.5
-margin_top = 106.5
-margin_right = 136.5
-margin_bottom = 126.5
+layout_mode = 0
+offset_left = 71.5
+offset_top = 106.5
+offset_right = 136.5
+offset_bottom = 126.5
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Join"
 
 [node name="ErrorLabel" type="Label" parent="Connect"]
-margin_left = 12.0
-margin_top = 137.0
-margin_right = 200.0
-margin_bottom = 155.0
+layout_mode = 0
+offset_left = 12.0
+offset_top = 137.0
+offset_right = 200.0
+offset_bottom = 155.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
-custom_colors/font_color = Color( 0.820312, 0.291595, 0.291595, 1 )
-align = 1
+theme_override_colors/font_color = Color(0.820312, 0.291595, 0.291595, 1)
 
 [node name="ErrorDialog" type="AcceptDialog" parent="."]
-margin_right = 55.0
-margin_bottom = 58.0
-size_flags_horizontal = 2
-size_flags_vertical = 2
-window_title = "Alerte !"
 
-[node name="lobbyPlayer" parent="." instance=ExtResource( 2 )]
-position = Vector2( 145, 110 )
+[node name="lobbyPlayer" parent="." instance=ExtResource("2")]
+position = Vector2(145, 110)
 
 [node name="keyboardZones" type="Node2D" parent="."]
-position = Vector2( 3, 0 )
+position = Vector2(3, 0)
 
 [node name="S" type="Area2D" parent="keyboardZones"]
-position = Vector2( 339, 235 )
+position = Vector2(339, 235)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/S"]
 show_behind_parent = true
-position = Vector2( -77, 115 )
-shape = SubResource( 1 )
+position = Vector2(-77, 115)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="D" type="Area2D" parent="keyboardZones"]
-position = Vector2( 400, 235 )
+position = Vector2(400, 235)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/D"]
 show_behind_parent = true
-position = Vector2( -77, 115 )
-shape = SubResource( 1 )
+position = Vector2(-77, 115)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="A" type="Area2D" parent="keyboardZones"]
-position = Vector2( 678, 470 )
+position = Vector2(678, 470)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/A"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="Q" type="Area2D" parent="keyboardZones"]
-position = Vector2( 739, 470 )
+position = Vector2(739, 470)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/Q"]
 show_behind_parent = true
-position = Vector2( -551, -179 )
-shape = SubResource( 1 )
+position = Vector2(-551, -179)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="W" type="Area2D" parent="keyboardZones"]
-position = Vector2( 325, 175 )
+position = Vector2(325, 175)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/W"]
 show_behind_parent = true
-position = Vector2( -77, 115 )
-shape = SubResource( 1 )
+position = Vector2(-77, 115)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="E" type="Area2D" parent="keyboardZones"]
-position = Vector2( 787, 407 )
+position = Vector2(787, 407)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/E"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="R" type="Area2D" parent="keyboardZones"]
-position = Vector2( 336, 235 )
+position = Vector2(336, 235)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/R"]
 show_behind_parent = true
-position = Vector2( 36, 54 )
-shape = SubResource( 1 )
+position = Vector2(36, 54)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="T" type="Area2D" parent="keyboardZones"]
-position = Vector2( 397, 235 )
+position = Vector2(397, 235)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/T"]
 show_behind_parent = true
-position = Vector2( 35, 57 )
-shape = SubResource( 1 )
+position = Vector2(35, 57)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="Y" type="Area2D" parent="keyboardZones"]
-position = Vector2( 969, 408 )
+position = Vector2(969, 408)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/Y"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="U" type="Area2D" parent="keyboardZones"]
-position = Vector2( 336, 235 )
+position = Vector2(336, 235)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/U"]
 show_behind_parent = true
-position = Vector2( 219, 57 )
-shape = SubResource( 1 )
+position = Vector2(219, 57)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="I" type="Area2D" parent="keyboardZones"]
-position = Vector2( 397, 235 )
+position = Vector2(397, 235)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/I"]
 show_behind_parent = true
-position = Vector2( 218, 54 )
-shape = SubResource( 1 )
+position = Vector2(218, 54)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="O" type="Area2D" parent="keyboardZones"]
-position = Vector2( 1153, 408 )
+position = Vector2(1153, 408)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/O"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="F" type="Area2D" parent="keyboardZones"]
-position = Vector2( 347, 296 )
+position = Vector2(347, 296)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/F"]
 show_behind_parent = true
-position = Vector2( 35, 57 )
-shape = SubResource( 1 )
+position = Vector2(35, 57)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="G" type="Area2D" parent="keyboardZones"]
-position = Vector2( 919, 469 )
+position = Vector2(919, 469)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/G"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="H" type="Area2D" parent="keyboardZones"]
-position = Vector2( 286, 296 )
+position = Vector2(286, 296)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/H"]
 show_behind_parent = true
-position = Vector2( 219, 57 )
-shape = SubResource( 1 )
+position = Vector2(219, 57)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="J" type="Area2D" parent="keyboardZones"]
-position = Vector2( 347, 296 )
+position = Vector2(347, 296)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/J"]
 show_behind_parent = true
-position = Vector2( 218, 54 )
-shape = SubResource( 1 )
+position = Vector2(218, 54)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="K" type="Area2D" parent="keyboardZones"]
-position = Vector2( 1103, 469 )
+position = Vector2(1103, 469)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/K"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="Z" type="Area2D" parent="keyboardZones"]
-position = Vector2( 214, 355 )
+position = Vector2(214, 355)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/Z"]
 show_behind_parent = true
-position = Vector2( 35, 57 )
-shape = SubResource( 1 )
+position = Vector2(35, 57)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="X" type="Area2D" parent="keyboardZones"]
-position = Vector2( 786, 528 )
+position = Vector2(786, 528)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/X"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="C" type="Area2D" parent="keyboardZones"]
-position = Vector2( 153, 355 )
+position = Vector2(153, 355)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/C"]
 show_behind_parent = true
-position = Vector2( 219, 57 )
-shape = SubResource( 1 )
+position = Vector2(219, 57)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="V" type="Area2D" parent="keyboardZones"]
-position = Vector2( 214, 355 )
+position = Vector2(214, 355)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/V"]
 show_behind_parent = true
-position = Vector2( 218, 54 )
-shape = SubResource( 1 )
+position = Vector2(218, 54)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="B" type="Area2D" parent="keyboardZones"]
-position = Vector2( 970, 528 )
+position = Vector2(970, 528)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/B"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="L" type="Area2D" parent="keyboardZones"]
-position = Vector2( 1166, 469 )
+position = Vector2(1166, 469)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/L"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="P" type="Area2D" parent="keyboardZones"]
-position = Vector2( 1214, 406 )
+position = Vector2(1214, 406)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/P"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="1" type="Area2D" parent="keyboardZones"]
-position = Vector2( 709, 409 )
+position = Vector2(709, 409)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/1"]
 show_behind_parent = true
-position = Vector2( -551, -179 )
-shape = SubResource( 1 )
+position = Vector2(-551, -179)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="2" type="Area2D" parent="keyboardZones"]
-position = Vector2( 295, 114 )
+position = Vector2(295, 114)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/2"]
 show_behind_parent = true
-position = Vector2( -77, 115 )
-shape = SubResource( 1 )
+position = Vector2(-77, 115)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="3" type="Area2D" parent="keyboardZones"]
-position = Vector2( 757, 346 )
+position = Vector2(757, 346)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/3"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="4" type="Area2D" parent="keyboardZones"]
-position = Vector2( 306, 174 )
+position = Vector2(306, 174)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/4"]
 show_behind_parent = true
-position = Vector2( 36, 54 )
-shape = SubResource( 1 )
+position = Vector2(36, 54)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="5" type="Area2D" parent="keyboardZones"]
-position = Vector2( 367, 174 )
+position = Vector2(367, 174)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/5"]
 show_behind_parent = true
-position = Vector2( 35, 57 )
-shape = SubResource( 1 )
+position = Vector2(35, 57)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="6" type="Area2D" parent="keyboardZones"]
-position = Vector2( 939, 347 )
+position = Vector2(939, 347)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/6"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="7" type="Area2D" parent="keyboardZones"]
-position = Vector2( 306, 174 )
+position = Vector2(306, 174)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/7"]
 show_behind_parent = true
-position = Vector2( 219, 57 )
-shape = SubResource( 1 )
+position = Vector2(219, 57)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="8" type="Area2D" parent="keyboardZones"]
-position = Vector2( 367, 174 )
+position = Vector2(367, 174)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/8"]
 show_behind_parent = true
-position = Vector2( 218, 54 )
-shape = SubResource( 1 )
+position = Vector2(218, 54)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="9" type="Area2D" parent="keyboardZones"]
-position = Vector2( 1123, 347 )
+position = Vector2(1123, 347)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/9"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="0" type="Area2D" parent="keyboardZones"]
-position = Vector2( 1184, 345 )
+position = Vector2(1184, 345)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/0"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="N" type="Area2D" parent="keyboardZones"]
-position = Vector2( 1030, 531 )
+position = Vector2(1030, 531)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/N"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="M" type="Area2D" parent="keyboardZones"]
-position = Vector2( 1091, 529 )
+position = Vector2(1091, 529)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/M"]
 show_behind_parent = true
-position = Vector2( -477, -118 )
-shape = SubResource( 1 )
+position = Vector2(-477, -118)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="Enter" type="Area2D" parent="keyboardZones"]
-position = Vector2( 678, 470 )
+position = Vector2(678, 470)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="keyboardZones/Enter"]
 show_behind_parent = true
-position = Vector2( 111, -118 )
-scale = Vector2( 3.7482, 1.66743 )
-shape = SubResource( 1 )
+position = Vector2(111, -118)
+scale = Vector2(3.7482, 1.66743)
+shape = SubResource("1")
 one_way_collision_margin = 0.0
 
 [node name="TextureRect" type="TextureRect" parent="."]
 show_behind_parent = true
-margin_left = 121.0
-margin_top = 184.0
-margin_right = 877.0
-margin_bottom = 514.0
-texture = ExtResource( 5 )
+layout_mode = 0
+offset_left = 121.0
+offset_top = 184.0
+offset_right = 877.0
+offset_bottom = 514.0
+texture = ExtResource("5")
 
 [connection signal="pressed" from="Players/Ready" to="." method="_on_Ready_pressed"]
 [connection signal="pressed" from="Players/Character_Choice/Char1" to="." method="_on_Char1_pressed"]
