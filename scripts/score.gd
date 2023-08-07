@@ -63,12 +63,12 @@ func refresh_score_and_health_for_player(player_id):
 
 func add_player(id, new_player_name):
 	var l = Label.new()
-	l.set_align(Label.ALIGNMENT_CENTER)
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	# l.set_align(Label.ALIGNMENT_CENTER)
 	l.set_h_size_flags(SIZE_EXPAND_FILL)
-	var font = FontFile.new()
-	font.set_size(18)
-	font.set_font_data(preload("res://assets/montserrat.otf"))
-	l.add_theme_font_override("font", font)
+	var font = preload("res://assets/montserrat.otf")
+	l.set("custom_fonts/font", font)
+	l.set("custom_font_size/font_size", 18)
 	add_child(l)
 
 	player_labels[id] = { name = new_player_name, label = l, score = 0, health = MAX_HEALTH }

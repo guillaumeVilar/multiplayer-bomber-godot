@@ -18,7 +18,8 @@ func explode():
 		if p.has_method("exploded"):
 			# Checks if there is wall in between bomb and the object
 			var world_state = get_world_2d().direct_space_state
-			var result  = world_state.intersect_ray(position, p.position)
+			var query := PhysicsRayQueryParameters2D.create(position, p.position)
+			var result  = world_state.intersect_ray(query)
 			if not result.collider is TileMap:
 				# Exploded has a master keyword, so it will only be received by the master.
 				p.rpc("exploded", from_player)

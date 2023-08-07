@@ -8,10 +8,19 @@ const CHARACTER_INDEX_TO_PATH = {
 	2: "res://assets/betty.png"
 }
 
-puppet var puppet_pos = Vector2()
-puppet var puppet_motion = Vector2()
+# var puppet_pos = Vector2()
+# var puppet_motion = Vector2()
 
-@export var stunned = false
+# @export 
+# var synced_position := Vector2()
+
+@export
+var motion = Vector2():
+	set(value):
+		motion = clamp(value, Vector2(-1, -1), Vector2(1, 1))
+
+@export 
+var stunned = false
 
 var current_anim = ""
 var prev_bombing = false
@@ -26,41 +35,45 @@ func init(index_char):
 
 func _ready():
 	stunned = false
-	puppet_pos = position
+	# position = synced_position
+
+	# puppet_pos = position
 	gamestate.connect("game_ended_on_server", Callable(self, "_on_game_ended_on_server"))
 
 
 func _physics_process(_delta):
-	var motion = Vector2()
-
 	if is_multiplayer_authority() && current_health >= 1:
+		var m = Vector2()
+		# synced_position = position
 		if Input.is_action_pressed("move_left"):
-			motion += Vector2(-1, 0)
+			m += Vector2(-1, 0)
 		if Input.is_action_pressed("move_right"):
-			motion += Vector2(1, 0)
+			m += Vector2(1, 0)
 		if Input.is_action_pressed("move_up"):
-			motion += Vector2(0, -1)
+			m += Vector2(0, -1)
 		if Input.is_action_pressed("move_down"):
-			motion += Vector2(0, 1)
+			m += Vector2(0, 1)
 
 		var bombing = Input.is_action_pressed("set_bomb")
 
 		if stunned:
 			bombing = false
-			motion = Vector2()
+			m = Vector2()
+
+		# Sending motion value to other peers
+		motion = m
 
 		if bombing and not prev_bombing:
 			var bomb_name = String(get_name()) + str(bomb_index)
 			var bomb_pos = position
-			rpc("setup_bomb", bomb_name, bomb_pos, get_tree().get_unique_id())
+			rpc("setup_bomb", bomb_name, bomb_pos, multiplayer.get_unique_id())
 
 		prev_bombing = bombing
 
-		rset("puppet_motion", motion)
-		rset("puppet_pos", position)
-	else:
-		position = puppet_pos
-		motion = puppet_motion
+		# rset("puppet_motion", motion)
+		# rset("puppet_pos", position)
+	# else:
+	# 	position = synced_position
 
 	var new_anim = "standing"
 	if motion.y < 0:
@@ -80,10 +93,10 @@ func _physics_process(_delta):
 		get_node("anim").play(current_anim)
 
 	# FIXME: Use move_and_slide
-	set_velocity(motion * MOTION_SPEED)
+	velocity = motion * MOTION_SPEED
 	move_and_slide()
-	if not is_multiplayer_authority():
-		puppet_pos = position # To avoid jitter
+	# if not is_multiplayer_authority():
+		# puppet_pos = position # To avoid jitter
 
 
 # Use sync because it will be called everywhere
@@ -104,7 +117,7 @@ func _physics_process(_delta):
 		queue_free()
 
 
-The master and mastersync rpc behavior is not officially supported anymore. Try using another keyword or making custom logic using get_multiplayer().get_remote_sender_id()
+# The master and mastersync rpc behavior is not officially supported anymore. Try using another keyword or making custom logic using get_multiplayer().get_remote_sender_id()
 @rpc func exploded(_by_who):
 	if stunned:
 		return
