@@ -21,7 +21,7 @@ func explode():
 			var query := PhysicsRayQueryParameters2D.create(position, p.position)
 			var result  = world_state.intersect_ray(query)
 			if not result.collider is TileMap:
-				# Exploded has a master keyword, so it will only be received by the master.
+				# Run 'exploded on all the peers (including local)'
 				p.rpc("exploded", from_player)
 
 
