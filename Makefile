@@ -2,10 +2,10 @@
 
 # ========================== LOCAL CLIENT SECTION (no docker) =========================
 export-linux:
-	../Godot_v4.1.1-stable_linux.x86_64 --path $(shell pwd) --export-release "Linux/X11" $(shell pwd)/builds/bomber_linux_export.x86_64
+	../Godot_v4.1.1-stable_linux.x86_64 --path $(shell pwd) --export-release "Linux/X11" $(shell pwd)/builds/bomber_linux_export.x86_64 --headless
 
 export-client-html:
-	./builds/Godot_v4.1.1-stable_linux.x86_64 --path $(shell pwd) --export "HTML5" $(shell pwd)/builds/client-html/index.html --headless
+	../Godot_v4.1.1-stable_linux.x86_64 --path $(shell pwd) --export-release "HTML5" $(shell pwd)/builds/client-html/index.html
 
 run-server-linux: 
 	$(shell pwd)/builds/bomber_linux_export.x86_64 --server
@@ -24,7 +24,7 @@ export-then-run-server-client: export-linux
 	konsole --noclose  -e $(shell pwd)/builds/bomber_linux_export.x86_64 --local
 
 launch-godot:
-	godot project.godot
+	../Godot_v4.1.1-stable_linux.x86_64 project.godot
 
 export-all-for-gcp: export-client-html export-linux
 
