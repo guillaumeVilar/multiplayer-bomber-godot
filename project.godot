@@ -71,6 +71,10 @@ set_bomb={
 ]
 }
 
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+
 [replication]
 
 config={
