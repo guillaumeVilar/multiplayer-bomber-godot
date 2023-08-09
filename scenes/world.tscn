@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://54qto28yqk45"]
 
 [ext_resource type="TileSet" path="res://assets/tileset.tres" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/rock.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://bikaxrx64ru1m" path="res://scenes/rock.tscn" id="2"]
 [ext_resource type="Script" path="res://scripts/score.gd" id="3"]
 [ext_resource type="FontFile" uid="uid://bkdfrq6nphn40" path="res://assets/montserrat.otf" id="4"]
 
@@ -274,9 +274,9 @@ position = Vector2(840, 456)
 [node name="Players" type="Node2D" parent="."]
 
 [node name="Score" type="HBoxContainer" parent="."]
-offset_top = -37.0
+offset_top = -27.0
 offset_right = 1024.0
-offset_bottom = 46.0
+offset_bottom = 18.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource("3")
@@ -308,6 +308,6 @@ text = "EXIT GAME"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(510, 300)
-zoom = Vector2(1, 1.1)
+zoom = Vector2(0.9, 0.99)
 
 [connection signal="pressed" from="Winner/ExitGame" to="Score" method="_on_exit_game_pressed"]
