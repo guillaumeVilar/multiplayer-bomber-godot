@@ -52,7 +52,8 @@ func refresh_score_and_health_for_player(player_id):
 	pl.score += 1
 	refresh_score_and_health_for_player(for_who)
 
-@rpc("any_peer", "call_local") func modify_health(player_id, new_health):
+@rpc("any_peer", "call_local") 
+func modify_health(player_id, new_health):
 	print("player_id: " + str(player_id))
 	print("player_labels: " + str(player_labels))
 	assert(player_id in player_labels)

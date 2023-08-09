@@ -109,7 +109,7 @@ func _physics_process(_delta):
 	get_node("../..").add_child(bomb)
 
 
-@rpc func stun():
+func stun():
 	stunned = true
 	current_health -= 1
 	# Delete current node if health is 0 or below (the player is dead)
@@ -118,13 +118,17 @@ func _physics_process(_delta):
 
 
 # The master and mastersync rpc behavior is not officially supported anymore. Try using another keyword or making custom logic using get_multiplayer().get_remote_sender_id()
-@rpc func exploded(_by_who):
+@rpc("any_peer", "call_local") 
+func exploded(_by_who):
 	if stunned:
 		return
+	stun() # Stun the player
+
+	# The player Id is also the name set to the Player node
+	var player_id = int(str(name))
 	# Update the score locally
-	$"../../Score".rpc("modify_health", get_tree().get_unique_id(), current_health - 1)
-	rpc("stun") # Stun puppets
-	stun() # Stun master - could use sync to do both at once
+	$"../../Score".modify_health(player_id, current_health)
+	
 
 
 func set_player_name(new_name):
