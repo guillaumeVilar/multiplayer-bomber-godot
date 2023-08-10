@@ -10,6 +10,7 @@ size = 44
 font_data = ExtResource( 4 )
 
 [node name="World" type="Node2D"]
+z_index = -1
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 1 )

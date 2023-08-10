@@ -42,6 +42,8 @@ func _ready():
 	get_tree().connect("connected_to_server", self, "_connected_ok")
 	get_tree().connect("connection_failed", self, "_connected_fail")
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
+	var joystick_ui = load("res://joystick/UI_Joystick.tscn").instance()
+	get_tree().get_root().call_deferred("add_child", joystick_ui)
 	if "--server" in OS.get_cmdline_args():
 		# Run your server startup code here...
 		# Using this check, you can start a dedicated server by running
