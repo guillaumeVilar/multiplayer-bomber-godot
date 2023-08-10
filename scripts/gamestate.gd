@@ -21,6 +21,10 @@ var peer = null
 
 var isGameCurrentlyRunning = false
 
+# Dict to set expected disconnection from server
+# This is useful to handle gracefully some disconection from the server (game ended for example)
+var expected_disconnection_from_server = {"isExpected": false, "message": ""}
+
 # Name for my player.
 var local_player = {"name": "The Warrior", "ready": false}
 
@@ -166,6 +170,10 @@ func _connected_ok():
 
 # Callback from SceneTree, only for clients (not server).
 func _server_disconnected():
+	print("Emitting signal Game Error - with reason Server Disconnected. Is expected? " + str(expected_disconnection_from_server["isExpected"]))
+	# Return and do nothing if the disconnection is expected.
+	if expected_disconnection_from_server["isExpected"]:
+		return
 	emit_signal("game_error", "Server disconnected")
 	end_game()
 
@@ -340,7 +348,12 @@ func begin_game():
 	pre_start_game(spawn_points)
 
 func end_game_on_server():
+	print("End Game on Server")
 	if multiplayer.is_server():
+		print("Disconnecting all clients")
+		# for p_id in players:
+		# 	print("Disconnecting peer with ID: " + str(p_id))
+		# 	server.disconnect_peer(p_id)
 		rpc("disconnectClient")
 		end_game()
 	emit_signal("game_ended_on_server")
@@ -355,12 +368,19 @@ func end_game():
 	players.clear()
 	isGameCurrentlyRunning = false
 	players_ready = []
+	expected_disconnection_from_server["isExpected"] = false
+	expected_disconnection_from_server["message"] = ""
 	# multiplayer.set_refuse_new_network_connections(false)
 
 # Disconnect the client from the server
 @rpc("any_peer") 
 func disconnectClient():
+	print("Disconnecting locally this peer")
+	expected_disconnection_from_server["isExpected"] = true
+	expected_disconnection_from_server["message"] = "Disconnection expected as game is finished" 
+	isGameCurrentlyRunning = false
 	client.close()
+	print("Client disconnected")
 
 func addLocalPlayerToServer():
 	print("Adding local player to server: " + str(local_player))
