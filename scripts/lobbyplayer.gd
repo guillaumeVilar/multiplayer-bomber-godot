@@ -18,31 +18,51 @@ func _ready():
 	set_player_name("")
 
 func _physics_process(_delta):
+	var direction = Vector2.ZERO
 	var velocity = Vector2()
-	if Input.is_action_pressed("move_left"):
-		velocity += Vector2(-1, 0)
-	if Input.is_action_pressed("move_right"):
-		velocity += Vector2(1, 0)
-	if Input.is_action_pressed("move_up"):
-		velocity += Vector2(0, -1)
-	if Input.is_action_pressed("move_down"):
-		velocity += Vector2(0, 1)
+	direction.x =  Input.get_axis("move_left", "move_right")
+	direction.y = Input.get_axis("move_up", "move_down")
+
+	if direction != Vector2.ZERO:
+		direction = direction.normalized()
+	
+	velocity.x = direction.x * speed
+	velocity.y = direction.y * speed
+
+	# var velocity = Vector2()
+	# if Input.is_action_pressed("move_left"):
+	# 	velocity += Vector2(-1, 0)
+	# if Input.is_action_pressed("move_right"):
+	# 	velocity += Vector2(1, 0)
+	# if Input.is_action_pressed("move_up"):
+	# 	velocity += Vector2(0, -1)
+	# if Input.is_action_pressed("move_down"):
+	# 	velocity += Vector2(0, 1)
 
 	var new_anim = "standing"
-	if velocity.y < 0:
-		new_anim = "walk_up"
-	elif velocity.y > 0:
-		new_anim = "walk_down"
-	elif velocity.x < 0:
-		new_anim = "walk_left"
-	elif velocity.x > 0:
-		new_anim = "walk_right"
+	if direction != Vector2.ZERO:
+		var value = velocity.y
+		if velocity.y < 0:
+			new_anim = "walk_up"
+		elif velocity.y > 0:
+			new_anim = "walk_down"
+		
+		if abs(velocity.x) > abs(velocity.y):
+			if velocity.x < 0:
+				new_anim = "walk_left"
+			else:
+				new_anim = "walk_right"
+
+		# elif velocity.x < 0:
+		# 	new_anim = "walk_left"
+		# elif velocity.x > 0:
+		# 	new_anim = "walk_right"
 
 	if new_anim != current_anim:
 		current_anim = new_anim
 		get_node("anim").play(current_anim)
 	
-	move_and_slide(velocity*speed)
+	move_and_slide(velocity)
 	
 	var lobby = get_node("/root/Lobby")
 

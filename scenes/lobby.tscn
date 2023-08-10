@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/lobby.gd" type="Script" id=1]
 [ext_resource path="res://scenes/lobbyplayer.tscn" type="PackedScene" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://assets/betty_icon.jpg" type="Texture" id=4]
 [ext_resource path="res://assets/keybordbg-removebg.png" type="Texture" id=5]
 [ext_resource path="res://assets/icon.png" type="Texture" id=6]
+[ext_resource path="res://joystick/virtual_joystick.tscn" type="PackedScene" id=7]
+[ext_resource path="res://joystick/Action_button.tscn" type="PackedScene" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 14.5955, 9.9846 )
@@ -137,11 +139,12 @@ text = "Join"
 margin_left = 12.0
 margin_top = 137.0
 margin_right = 200.0
-margin_bottom = 155.0
+margin_bottom = 216.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 custom_colors/font_color = Color( 0.820312, 0.291595, 0.291595, 1 )
 align = 1
+autowrap = true
 
 [node name="ErrorDialog" type="AcceptDialog" parent="."]
 margin_right = 55.0
@@ -497,6 +500,18 @@ margin_top = 184.0
 margin_right = 877.0
 margin_bottom = 514.0
 texture = ExtResource( 5 )
+
+[node name="Virtual joystick" parent="." instance=ExtResource( 7 )]
+margin_left = 2.0
+margin_top = -200.0
+margin_right = 202.0
+margin_bottom = 0.0
+action_left = "move_left"
+action_right = "move_right"
+action_up = "move_up"
+action_down = "move_down"
+
+[node name="Action_button" parent="." instance=ExtResource( 8 )]
 
 [connection signal="pressed" from="Players/Ready" to="." method="_on_Ready_pressed"]
 [connection signal="pressed" from="Players/Character_Choice/Char1" to="." method="_on_Char1_pressed"]
