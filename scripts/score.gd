@@ -3,8 +3,12 @@ extends HBoxContainer
 
 var player_labels = {}
 const MAX_HEALTH = 5
+var is_showing_game_over_screen = false
 
 func _process(_delta):
+	if is_showing_game_over_screen == true:
+		return
+	
 	var rocks_left = $"../Rocks".get_child_count()
 	if rocks_left == 0:
 		var winner_name = ""
@@ -16,16 +20,19 @@ func _process(_delta):
 
 		$"../Winner".set_text("THE WINNER IS:\n" + winner_name)
 		$"../Winner".show()
+		is_showing_game_over_screen = true
 		gamestate.end_game_on_server()
 
 	var number_of_player_alive_and_name_last_player = get_number_of_player_alive_and_name_last_player()
 	if number_of_player_alive_and_name_last_player["nb_player_alive"] == 1 && player_labels.size() != 1:
 		$"../Winner".set_text("THE WINNER IS:\n" + number_of_player_alive_and_name_last_player["last_alive_player_name"])
 		$"../Winner".show()
+		is_showing_game_over_screen = true
 		gamestate.end_game_on_server()
 	if number_of_player_alive_and_name_last_player["nb_player_alive"] == 0:
 		$"../Winner".set_text("THERE IS NO WINNER IN THIS GAME")
 		$"../Winner".show()
+		is_showing_game_over_screen = true
 		gamestate.end_game_on_server()
 
 func get_number_of_player_alive_and_name_last_player():
@@ -78,6 +85,7 @@ func add_player(id, new_player_name):
 
 func _ready():
 	$"../Winner".hide()
+	is_showing_game_over_screen = false
 	set_process(true)
 
 
