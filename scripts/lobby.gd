@@ -14,6 +14,16 @@ func _ready():
 	if "--server" in OS.get_cmdline_args():
 		print("Server starting up detected in lobby - disabling UI!")
 		server_disable_UI()
+# 	if OS.has_feature('JavaScript'):
+# 		# var js_return = JavaScriptBridge.eval("navigator.userAgent;")
+# 		var user_agent = JavaScript.eval("navigator.userAgent;")
+# 		var width = JavaScript.eval("window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;")
+# 		var debug_message = "User agent:" + str(user_agent) + " - Width screen:" + str(width)
+# 		print(debug_message)
+# 		debug(debug_message)
+
+# func debug(message):
+# 	$Connect/ErrorLabel.text = message
 
 func get_lobby_player():
 	if lobby_player_id == null:
