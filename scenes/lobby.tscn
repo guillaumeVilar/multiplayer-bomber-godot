@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/lobby.gd" type="Script" id=1]
 [ext_resource path="res://scenes/lobbyplayer.tscn" type="PackedScene" id=2]
@@ -6,8 +6,6 @@
 [ext_resource path="res://assets/betty_icon.jpg" type="Texture" id=4]
 [ext_resource path="res://assets/keybordbg-removebg.png" type="Texture" id=5]
 [ext_resource path="res://assets/icon.png" type="Texture" id=6]
-[ext_resource path="res://joystick/virtual_joystick.tscn" type="PackedScene" id=7]
-[ext_resource path="res://joystick/Action_button.tscn" type="PackedScene" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 14.5955, 9.9846 )
@@ -500,20 +498,6 @@ margin_top = 184.0
 margin_right = 877.0
 margin_bottom = 514.0
 texture = ExtResource( 5 )
-
-[node name="Virtual joystick" parent="." instance=ExtResource( 7 )]
-visible = false
-margin_left = 2.0
-margin_top = -200.0
-margin_right = 202.0
-margin_bottom = 0.0
-action_left = "move_left"
-action_right = "move_right"
-action_up = "move_up"
-action_down = "move_down"
-
-[node name="Action_button" parent="." instance=ExtResource( 8 )]
-visible = false
 
 [connection signal="pressed" from="Players/Ready" to="." method="_on_Ready_pressed"]
 [connection signal="pressed" from="Players/Character_Choice/Char1" to="." method="_on_Char1_pressed"]
