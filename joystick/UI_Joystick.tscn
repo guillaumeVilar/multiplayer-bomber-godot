@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://joystick/virtual_joystick.tscn" type="PackedScene" id=1]
-[ext_resource path="res://joystick/Action_button.tscn" type="PackedScene" id=2]
+[ext_resource path="res://joystick/virtual_joystick.gd" type="Script" id=1]
+[ext_resource path="res://joystick/textures/joystick_tip_arrows.png" type="Texture" id=2]
+[ext_resource path="res://stash/joystick_base_outline.png" type="Texture" id=3]
+[ext_resource path="res://joystick/textures/joystick_tip.png" type="Texture" id=4]
+[ext_resource path="res://joystick/textures/joystick_base_outline.png" type="Texture" id=5]
 
 [node name="Node" type="Control"]
 anchor_top = 1.0
@@ -14,15 +17,54 @@ anchor_bottom = 1.0
 margin_top = -202.0
 margin_right = 203.0
 
-[node name="Virtual joystick" parent="Control1" instance=ExtResource( 1 )]
-margin_left = 0.0
+[node name="Virtual joystick" type="Control" parent="Control1"]
+modulate = Color( 1, 1, 1, 0.509804 )
+anchor_top = 1.0
+anchor_bottom = 1.0
 margin_top = -200.0
 margin_right = 200.0
-margin_bottom = 0.0
+script = ExtResource( 1 )
 action_left = "move_left"
 action_right = "move_right"
 action_up = "move_up"
 action_down = "move_down"
+
+[node name="Base" type="TextureRect" parent="Control1/Virtual joystick"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = -100.0
+margin_right = 100.0
+margin_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_pivot_offset = Vector2( 100, 100 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 3 )
+stretch_mode = 6
+
+[node name="Tip" type="TextureRect" parent="Control1/Virtual joystick/Base"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -50.0
+margin_right = 50.0
+margin_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_pivot_offset = Vector2( 50, 50 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 2 )
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Control2" type="Control" parent="."]
 anchor_left = 1.0
@@ -32,4 +74,16 @@ anchor_bottom = 1.0
 margin_left = -109.0
 margin_top = -109.0
 
-[node name="Action_button" parent="Control2" instance=ExtResource( 2 )]
+[node name="Action_button" type="GridContainer" parent="Control2"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -40.0
+margin_top = -40.0
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Control2/Action_button"]
+position = Vector2( -64, -64 )
+normal = ExtResource( 4 )
+pressed = ExtResource( 5 )
+action = "set_bomb"
