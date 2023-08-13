@@ -95,18 +95,21 @@ remote func addPlayer(new_player_name):
 # Callback from SceneTree.
 func _player_disconnected(id):
 	print("Player disconnected with id: " + str(id))
-	print("Is /root/World presnet? " + str(has_node("/root/World")))
-	print("Current players dict: " + str(players))
+	print("Is /root/World present? " + str(has_node("/root/World")))
+	print("Current players dict: " + str(players) + " - result of bool: " + str(id in players))
 
 	# End game if game is in progress and a player disconnected
 	if has_node("/root/World") && id in players: 
+		var error_message = "Player " + players[id]["name"] + " disconnected"
+		print("Game Error - " + error_message)
 		if get_tree().is_network_server():
-			# TODO: To fix to support new format.
-			print("Game Error - ending game from server - player disconnected is: " + players[id])
-			emit_signal("game_error", "Player " + players[id] + " disconnected")
 			end_game_on_server()
+		# Ending game on client in case of another peer disconnecting
+		else:
+			end_game()
+		emit_signal("game_error", error_message)
 	else: # Game was not in progress.
-		# Unregister this player.
+		# Unregister the disconnected player.
 		unregister_player(id)
 
 
