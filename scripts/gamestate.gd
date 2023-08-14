@@ -70,13 +70,6 @@ func _process(delta):
 func _player_connected(id):
 	print("Player connected ID: " + str(id))
 
-	# # If this node is the server check if the game is currently running - if yes, disconnect the new client
-	# if get_tree().get_network_unique_id() == 1:
-	# 	# From server, send information if the game has already started and disconnect client
-	# 	if isGameCurrentlyRunning:
-	# 		print("Disconnecting client with id: " + str(id))
-	# 		rpc_id(id, "disconnectClient")
-	# 		return
 
 
 remote func addPlayer(new_player_name):
@@ -190,7 +183,8 @@ func unregister_player(id):
 	emit_signal("player_list_changed")
 
 
-remote func pre_start_game(spawn_points):
+# Starting the game on all the peers - including the server
+remotesync func start_game():
 	print("Starting game with player list: " + str(players))
 	# Change scene.
 	var world = load("res://scenes/world.tscn").instance()
@@ -198,42 +192,9 @@ remote func pre_start_game(spawn_points):
 
 	get_tree().get_root().get_node("Lobby").hide()
 
-	var player_scene = load("res://scenes/player.tscn")
-
-	for p_id in spawn_points:
-		var spawn_pos = world.get_node("SpawnPoints/" + str(spawn_points[p_id])).position
-		var player = player_scene.instance()
-		# Instantiate the character sprite chosen
-		player.init(players[p_id]["char_index"])
-
-		player.set_name(str(p_id)) # Use unique ID as node name.
-		player.position=spawn_pos
-		player.set_network_master(p_id) #set unique id as master.
-
-		if p_id == get_tree().get_network_unique_id():
-			# If node for this peer id, set name.
-			player.set_player_name(local_player["name"])
-		else:
-			# Otherwise set name from peer.
-			player.set_player_name(players[p_id]["name"])
-
-		world.get_node("Players").add_child(player)
-
-	# Set up score.
-	for pn in players:
-		world.get_node("Score").add_player(pn, players[pn]["name"])
-
-	if not get_tree().is_network_server():
-		# Tell server we are ready to start.
-		rpc_id(1, "ready_to_start", get_tree().get_network_unique_id())
-
-
-# The readyness is done - not allowing new players to join until the game is finished
-remote func ready_to_start(id):
-	assert(get_tree().is_network_server())
-	print("On server - not allowing any new connection until the game ends")
+	print("Setting the game as currently running ")
 	isGameCurrentlyRunning = true
-	# get_tree().set_refuse_new_network_connections(true)
+
 
 func are_all_players_ready():
 	for p in players:
@@ -259,8 +220,8 @@ remote func update_players_dict_on_server(players_from_client):
 		# Checking if all the players are ready to start the game
 		print("Checking on readyness of player dict: " + str(players))
 		if are_all_players_ready() == true:
-			print("Beginning the game")
-			begin_game()
+			print("Beginning the game from server")
+			rpc("start_game")
 
 
 # Called when the ready button is pressed in the lobby. 
@@ -310,27 +271,12 @@ func get_local_player_id():
 	return get_tree().get_network_unique_id()
 
 
-func begin_game():
-	assert(get_tree().is_network_server())
-
-	# Create a dictionary with peer id and respective spawn points, could be improved by randomizing.
-	var spawn_points = {}
-	# spawn_points[1] = 0 # Server in spawn point 0.
-	var spawn_point_idx = 0
-	for p in players:
-		spawn_points[p] = spawn_point_idx
-		spawn_point_idx += 1
-	# Call to pre-start game with the spawn points.
-	for p in players:
-		rpc_id(p, "pre_start_game", spawn_points)
-
-	pre_start_game(spawn_points)
-
 func end_game_on_server():
 	if get_tree().is_network_server():
 		rpc("disconnectClient")
 		end_game()
 	emit_signal("game_ended_on_server")
+
 
 func end_game():
 	print("Game is finished - allowing new players to join")
@@ -344,13 +290,16 @@ func end_game():
 	players_ready = []
 	# get_tree().set_refuse_new_network_connections(false)
 
+
 # Disconnect the client from the server
 remote func disconnectClient():
 	client.disconnect_from_host()
 
+
 func addLocalPlayerToServer():
 	print("Adding local player to server: " + str(local_player))
 	rpc_id(1, "addPlayer", local_player["name"])
+
 
 remote func check_current_players():
 	print("Current players: " + str(players))
