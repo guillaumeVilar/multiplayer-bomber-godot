@@ -40,10 +40,11 @@ size_flags_vertical = 0
 text = "Awaiting Players..."
 
 [node name="Ready" type="Button" parent="Players"]
-margin_left = 86.0
-margin_top = 307.5
-margin_right = 170.0
-margin_bottom = 336.5
+margin_left = 43.0
+margin_top = 289.5
+margin_right = 127.0
+margin_bottom = 318.5
+rect_scale = Vector2( 2, 2 )
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Ready"
@@ -52,7 +53,7 @@ text = "Ready"
 margin_left = 25.0
 margin_top = 37.0
 margin_right = 229.0
-margin_bottom = 296.0
+margin_bottom = 274.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 
@@ -108,27 +109,29 @@ size_flags_horizontal = 2
 size_flags_vertical = 2
 
 [node name="NameLabel" type="Label" parent="Connect"]
-margin_left = 75.0
-margin_top = 30.0
-margin_right = 117.0
-margin_bottom = 44.0
+margin_left = 54.0
+margin_top = 17.0
+margin_right = 102.0
+margin_bottom = 38.0
+rect_scale = Vector2( 2, 2 )
 size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "Name:"
 
 [node name="Name" type="LineEdit" parent="Connect"]
-margin_left = 19.5
-margin_top = 54.5
-margin_right = 175.5
-margin_bottom = 78.5
+margin_left = 20.0
+margin_top = 55.0
+margin_right = 176.0
+margin_bottom = 103.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 
 [node name="Join" type="Button" parent="Connect"]
-margin_left = 71.5
-margin_top = 106.5
-margin_right = 136.5
-margin_bottom = 126.5
+margin_left = 23.0
+margin_top = 116.0
+margin_right = 100.0
+margin_bottom = 136.0
+rect_scale = Vector2( 2, 2 )
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Join"
