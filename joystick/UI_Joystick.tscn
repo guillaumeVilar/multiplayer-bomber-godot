@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://joystick/virtual_joystick.gd" type="Script" id=1]
 [ext_resource path="res://joystick/textures/joystick_tip_arrows.png" type="Texture" id=2]
-[ext_resource path="res://stash/joystick_base_outline.png" type="Texture" id=3]
 [ext_resource path="res://joystick/textures/joystick_tip.png" type="Texture" id=4]
 [ext_resource path="res://joystick/textures/joystick_base_outline.png" type="Texture" id=5]
 
@@ -43,7 +42,7 @@ grow_vertical = 2
 rect_pivot_offset = Vector2( 100, 100 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource( 3 )
+texture = ExtResource( 5 )
 stretch_mode = 6
 
 [node name="Tip" type="TextureRect" parent="Control1/Virtual joystick/Base"]
