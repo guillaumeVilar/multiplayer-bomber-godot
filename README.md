@@ -19,7 +19,6 @@ Renderer: GLES 2
 
 
 
-
 ## Screenshots
 
 ![Screenshot](screenshots/bomber.png)
